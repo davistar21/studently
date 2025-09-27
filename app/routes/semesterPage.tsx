@@ -7,10 +7,11 @@ import { Button } from "~/components/ui/button";
 import { useEffect, useState, type FormEvent } from "react";
 import { useAppStore } from "~/lib/store";
 import type { Course } from "types/store";
+import FileUploader from "~/components/FileUploader";
 
 const SemesterPage = () => {
   // Dummy semester data
-  const gpa = 3.42;
+  const gpa = 0.0;
   // const dumbCourses = [
   //   { code: "MTH101", name: "Calculus I", units: 3, grade: "A" },
   //   { code: "PHY101", name: "Physics I", units: 3, grade: "B" },
@@ -30,7 +31,7 @@ const SemesterPage = () => {
   }, [semesterId]);
 
   const randomCompletion = 56;
-
+  function handleEdit(id: string) {}
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget.closest("form");
@@ -43,7 +44,7 @@ const SemesterPage = () => {
     if (!name || !code || !units) return;
 
     const newCourse = {
-      id: crypto.randomUUID(),
+      id: String(courses.length + 1),
       name,
       code,
       units: Number(units),
@@ -169,15 +170,22 @@ const SemesterPage = () => {
               // const id = crypto.randomUUID();
 
               return (
-                <Link to={`courses/${course.id}`} key={course.id}>
+                <Link to={`courses/${course.id}`} key={idx}>
                   <motion.div
                     key={idx}
                     className="w-[200px] bg-white shadow rounded-2xl p-4 flex-shrink-0"
                     whileHover={{ scale: 1.05 }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ delay: idx * 0.1, duration: 0.4 }}
                   >
                     <h3 className="font-bold text-gray-800">{course.code}</h3>
 
-                    <p title={course.name} className="truncate text-gray-600">
+                    <p
+                      title={course.name}
+                      className="truncate capitalize text-gray-600"
+                    >
                       {course.name}
                     </p>
                     <div className="mt-3 text-sm text-gray-500">
@@ -193,7 +201,28 @@ const SemesterPage = () => {
 
       {/* GPA Table */}
       <div>
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">GPA Table</h2>
+        <div className="flex justify-between mb-4 items-center">
+          <h2 className="text-xl font-semibold  text-gray-800">GPA Table</h2>
+          {/*p-2 bg-green-600 rounded-md text-white */}
+          <AppDialog
+            triggerLabel="Upload Result"
+            title="Upload Result"
+            description="Upload this semester's result to automatically add them to the table"
+          >
+            <form className="space-y-2" onSubmit={handleSubmit}>
+              <label htmlFor="course-code" className="w-full">
+                <FileUploader onFileSelect={() => {}} />
+              </label>
+
+              <Button
+                type="submit"
+                className="primary-button text-white w-fit ml-auto"
+              >
+                Upload
+              </Button>
+            </form>
+          </AppDialog>
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white rounded-2xl shadow">
             <thead className="bg-gray-100 text-gray-700">
@@ -201,7 +230,7 @@ const SemesterPage = () => {
                 <th className="p-3 text-left">Course</th>
                 <th className="p-3 text-left">Units</th>
                 <th className="p-3 text-left">Grade</th>
-                <th className="p-3 text-left">0</th>
+                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -213,14 +242,58 @@ const SemesterPage = () => {
                   <td className="p-3">{c.code}</td>
                   <td className="p-3">{c.units}</td>
                   <td className="p-3">{c.grade}</td>
-                  <td className="p-3">{0}</td>
+                  <AppDialog
+                    triggerLabel="Edit"
+                    title="Add a new course"
+                    description="Fill in the course details below."
+                  >
+                    <form
+                      className="space-y-2"
+                      onSubmit={() => {
+                        handleEdit(c.id);
+                      }}
+                    >
+                      <label htmlFor="course-code" className="w-full">
+                        <input
+                          type="text"
+                          name="course-code"
+                          id="course-code"
+                          placeholder="Course Code"
+                          className="border rounded-md uppercase placeholder:capitalize"
+                        />
+                      </label>
+                      <label htmlFor="course-name" className="w-full">
+                        <input
+                          type="text"
+                          name="course-name"
+                          id="course-name"
+                          placeholder="Course Name"
+                          className=" border rounded-md uppercase  placeholder:capitalize"
+                        />
+                      </label>
+                      <label htmlFor="course-units" className="w-full">
+                        <input
+                          type="number"
+                          name="course-units"
+                          id="course-units"
+                          placeholder="Units"
+                          className=" border rounded-md "
+                        />
+                      </label>
+                      <Button
+                        type="submit"
+                        className="primary-button text-white w-fit ml-auto"
+                      >
+                        Save
+                      </Button>
+                    </form>
+                  </AppDialog>
                 </tr>
               ))}
               <tr className="bg-gray-50 font-semibold text-gray-600">
                 <td className="p-3">Total</td>
                 <td className="p-3">{totalUnits}</td>
                 <td className="p-3">—</td>
-                <td className="p-3">{gpa.toFixed(2)}</td>
               </tr>
             </tbody>
           </table>

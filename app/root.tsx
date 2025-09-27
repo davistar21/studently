@@ -59,7 +59,14 @@ export default function App() {
         <header className="flex items-center p-4 sticky">
           <SidebarTrigger className="text-black" />
           <Link to="/dashboard">
-            <h2 className="!font-bold md:hidden">Studently</h2>{" "}
+            {/* <h2 className="!font-bold md:hidden">Studently</h2>{" "} */}
+            <div className="h-24">
+              <img
+                src="/images/studently-logo-temppng.png"
+                alt=""
+                className="object-contain"
+              />
+            </div>
           </Link>
           <div className="ml-auto">
             <ThemeToggle />

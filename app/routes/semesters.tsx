@@ -52,15 +52,15 @@ export default function Semesters() {
   const { addSemester, semesters, getTotalUnits } = useAppStore();
   useEffect(() => {
     if (semesters.length == 0) {
-      // addSemester({
-      //   id: crypto.randomUUID(),
-      //   name: "Semester 1",
-      //   units: 0,
-      //   courses: [],
-      // });
+      addSemester({
+        id: String(semesters.length + 1),
+        name: "Semester" + String(semesters.length + 1),
+        units: 0,
+        courses: [],
+      });
       // console.log(semesters);
     }
-  }, []);
+  }, [semesters]);
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="flex flex-col md:flex-row items-center justify-between mb-4">
@@ -87,11 +87,12 @@ export default function Semesters() {
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {semesters.map((sem, idx) => (
-          <Link to={`/semesters/${sem.id}`} key={crypto.randomUUID()}>
+          <Link to={`/semesters/${sem.id}`} key={idx}>
             <motion.div
               whileHover={{ scale: 1.05 }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ delay: idx * 0.1, duration: 0.4 }}
               className="bg-white shadow-md rounded-2xl p-5 flex flex-col justify-between"
             >
@@ -100,7 +101,7 @@ export default function Semesters() {
                   {sem.name}
                 </h2>
                 <div className="ml-auto">
-                  <GPAGauge gpa={3} />
+                  <GPAGauge gpa={0} />
                 </div>
               </div>
 

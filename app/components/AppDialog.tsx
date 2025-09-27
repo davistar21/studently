@@ -34,7 +34,7 @@ const AppDialog: React.FC<IAppDialog> = ({
           {triggerLabel}
         </motion.button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-gray-200 shadow-md">
+      <DialogContent className="sm:max-w-[425px] bg-gray-200 shadow-md dark:bg-gradient-dark">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

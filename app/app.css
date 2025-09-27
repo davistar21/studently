@@ -31,7 +31,7 @@ body {
 
 main {
   /* background: linear-gradient(135deg, #c5fffeb1, #e2e2ff); */
-  @apply min-h-screen w-full md:px-4 dark:bg-gradient-to-br from-[#40044c] to-[#270764];
+  @apply min-h-screen w-full md:px-4;
 }
 h1 {
   @apply text-5xl lg:text-[84px] text-gradient leading-tight tracking-[-2px] font-semibold;
@@ -172,6 +172,9 @@ form {
 
 @utility bg-gradient {
   background: linear-gradient(to bottom, #f0f4ff 60%, #fa7185cc);
+}
+@utility bg-gradient-dark {
+  background: linear-gradient(135deg, #0e2762, #195c80, #0e2762);
 }
 
 @utility text-gradient {
