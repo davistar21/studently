@@ -4,49 +4,50 @@ import AppDialog from "~/components/AppDialog";
 import { Button } from "~/components/ui/button";
 import TopicDeck from "~/components/TopicDeck";
 import { useParams } from "react-router";
-import { useEffect, useState, type FormEvent } from "react";
-import { useAppStore } from "~/lib/store";
-import type { Topic, Course } from "types/store";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useAppStore } from "~/lib/zustandStore";
+import type { Topic, Course } from "types";
 
 const CourseDetailsPage = () => {
   // Dummy data
   const { semesterId, courseId } = useParams();
-  const { getCourse, getSemester, semesters } = useAppStore();
-  const [course, setCourse] = useState<Course | null>(null);
-  const dummyTopics: Topic[] = [
-    {
-      id: "1",
-      title: "Partial Derivatives and Gradient Vectors",
-      status: "completed",
-    },
-    {
-      id: "2",
-      title: "Multiple Integrals: Double and Triple Integrals",
-      status: "in_progress",
-    },
-    {
-      id: "3",
-      title: "Chain Rule for Multivariable Functions",
-      status: "not_started",
-    },
-    {
-      id: "4",
-      title: "Vector Calculus: Divergence and Curl",
-      status: "not_completed",
-    },
-    {
-      id: "5",
-      title: "Surface Integrals and Green's Theorem",
-      status: "completed",
-    },
-  ];
+  // const { getCourse, getSemester, semesters } = useAppStore();
+  const { semesters, getSemesterById } = useAppStore();
+  // const [course, setCourse] = useState<Course | null>(null);
+  // const dummyTopics: Topic[] = [
+  //   {
+  //     id: "1",
+  //     title: "Partial Derivatives and Gradient Vectors",
+  //     status: "completed",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Multiple Integrals: Double and Triple Integrals",
+  //     status: "in_progress",
+  //   },
+  //   {
+  //     id: "3",
+  //     title: "Chain Rule for Multivariable Functions",
+  //     status: "not_started",
+  //   },
+  //   {
+  //     id: "4",
+  //     title: "Vector Calculus: Divergence and Curl",
+  //     status: "not_completed",
+  //   },
+  //   {
+  //     id: "5",
+  //     title: "Surface Integrals and Green's Theorem",
+  //     status: "completed",
+  //   },
+  // ];
 
-  const [topics, setTopics] = useState<Topic[]>([]);
+  // const [topics, setTopics] = useState<Topic[]>([]);
   useEffect(() => {
     if (!courseId || !semesterId) return;
-    const course = getCourse(semesterId, courseId);
-    if (!course) return;
-    setCourse(course);
+    // const course = getCourse(semesterId, courseId);
+    // if (!course) return;
+    // setCourse(course);
   }, [courseId, semesterId]);
   // const course = {
   //   code: "MTH101",
@@ -59,21 +60,28 @@ const CourseDetailsPage = () => {
   function handleSubmit() {}
   function handleAddTopic(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget.closest("form");
-    if (!form) return;
-    const formData = new FormData(form);
-    const title = formData.get("course-topic") as string;
-    if (!title) return;
-    const newTopic: Topic = {
-      id: crypto.randomUUID(),
-      title,
-      status: "not_started",
-    };
-    setTopics((prev) => [...prev, newTopic]);
+    // const form = e.currentTarget.closest("form");
+    // if (!form) return;
+    // const formData = new FormData(form);
+    // const title = formData.get("course-topic") as string;
+    // if (!title) return;
+    // const newTopic: Topic = {
+    //   id: crypto.randomUUID(),
+    //   title,
+    //   status: "not_started",
+    // };
+    // setTopics((prev) => [...prev, newTopic]);
   }
+
+  const course = useMemo(() => {
+    const sem = semesterId ? getSemesterById(semesterId) : null;
+    return sem?.courses.find((c) => c.id === courseId) ?? null;
+  }, [semesterId, courseId, semesters]);
+  const topics = useMemo(() => course?.topics ?? [], [course]);
+
   if (!course) return <div>Failed to fetch course</div>;
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-6 min-h-screen bg-[url('/images/bg-soft-light.png')] dark:bg-[url('/images/bg-soft-dark.png')] bg-cover bg-repeat bg-center relative space-y-8">
       {/* Header */}
       <motion.div
         className="bg-white shadow rounded-2xl p-6"

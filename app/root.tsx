@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -15,6 +16,10 @@ import NavBar from "./components/NavBar";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ThemeToggle from "./components/ThemeToggle";
+import { Amplify } from "aws-amplify";
+import outputs from "../amplify_outputs.json";
+import Header from "./components/Header";
+Amplify.configure(outputs);
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -50,28 +55,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const noSidebarPaths = ['/','/auth'];
+  const location = useLocation();
+  const isSidebarVisible = !noSidebarPaths.includes(location.pathname);
   return (
     <SidebarProvider>
       {/* <div className="app-container flex lg:flex-row flex-col"> */}
       {/* <NavBar /> */}
-      <AppSidebar />
+      {isSidebarVisible&&<AppSidebar />}
       <main>
-        <header className="flex items-center p-4 sticky">
-          <SidebarTrigger className="text-black" />
-          <Link to="/dashboard">
-            {/* <h2 className="!font-bold md:hidden">Studently</h2>{" "} */}
-            <div className="h-24">
-              <img
-                src="/images/studently-logo-temppng.png"
-                alt=""
-                className="object-contain"
-              />
-            </div>
-          </Link>
-          <div className="ml-auto">
-            <ThemeToggle />
-          </div>
-        </header>
+        <Header/>
         <Outlet />
       </main>
       {/* </div> */}
