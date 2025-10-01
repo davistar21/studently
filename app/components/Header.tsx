@@ -31,7 +31,7 @@ const Header = () => {
       )}
 
       <Link to="/dashboard">
-        <Logo className="ml-2 text-4xl" />
+        <Logo className="ml-2 md:text-4xl text-3xl" />
       </Link>
 
       <div className="ml-auto">

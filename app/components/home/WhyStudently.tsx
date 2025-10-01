@@ -1,6 +1,6 @@
 import { Layers, Brain, Focus, BarChart3, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-
+import { motion } from "framer-motion";
 const features = [
   {
     title: "All-in-One Platform",
@@ -51,7 +51,14 @@ export default function WhyStudently() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
           {features.map((feature, index) => (
-            <div key={index} className="relative group min-h-[250px]">
+            <motion.div
+              key={index}
+              className="relative group min-h-[250px]"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ delay: index * 0.2, duration: 0.4 }}
+            >
               {/* Glow effect */}
               <div
                 className="absolute inset-0 rounded-2xl opacity-40 blur-[6px] z-0 transition-all duration-500 group-hover:opacity-70 group-hover:blur-sm"
@@ -75,7 +82,7 @@ export default function WhyStudently() {
                   {feature.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
         <Link
