@@ -1,7 +1,7 @@
 // store.ts
 import { create } from "zustand";
-import type { AppState, Semester, Course, Topic } from "types/store";
-
+import type { AppState, Semester, Course, Topic } from "types";
+const LOCAL_STORAGE_KEY = "app-store";
 export const useAppStore = create<AppState>((set, get) => ({
   semesters: [],
   getCourse: (semesterId: string, courseId: string) => {

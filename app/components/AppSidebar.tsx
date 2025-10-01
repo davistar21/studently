@@ -77,7 +77,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem
                   key={item.title}
-                  className="group rounded-md px-2 py-1 bg-gray-100 hover:text-black hover:bg-gray-200 transition-colors duration-300 "
+                  className="group rounded-md px-2 py-3 bg-gray-100 hover:text-black hover:bg-gray-200 transition-colors duration-300 "
                 >
                   <SidebarMenuButton
                     asChild

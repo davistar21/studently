@@ -1,33 +1,34 @@
-// src/pages/SemesterPage.tsx
 import { motion } from "framer-motion";
 import GPAGauge from "../components/gpaGauge";
 import { Link, useParams } from "react-router";
 import AppDialog from "~/components/AppDialog";
 import { Button } from "~/components/ui/button";
-import { useEffect, useState, type FormEvent } from "react";
-import { useAppStore } from "~/lib/store";
-import type { Course } from "types/store";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useAppStore } from "~/lib/zustandStore";
+import type { Course } from "types";
 import FileUploader from "~/components/FileUploader";
+import capitalizeWords from "~/utils/capitalizeWords";
 
 const SemesterPage = () => {
-  // Dummy semester data
   const gpa = 0.0;
-  // const dumbCourses = [
-  //   { code: "MTH101", name: "Calculus I", units: 3, grade: "A" },
-  //   { code: "PHY101", name: "Physics I", units: 3, grade: "B" },
-  //   { code: "CHM101", name: "Chemistry I", units: 2, grade: "A" },
-  //   { code: "ENG101", name: "English I", units: 2, grade: "C" },
-  // ];
-  const { semesterId } = useParams(); // URL like /semesters/:semesterId
-  const { semesters, getSemester, addCourse } = useAppStore();
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [totalUnits, setTotalUnits] = useState(0);
-  useEffect(() => {
+  const { semesterId } = useParams();
+  // const { semesters, getSemester, addCourse } = useAppStore();
+  const { semesters, getSemesterById, addCourseToSemester } = useAppStore();
+  // const [courses, setCourses] = useState<Course[]>([]);
+  // const [totalUnits, setTotalUnits] = useState(0);
+  const semester = useMemo(() => {
     if (!semesterId) return;
-    const semester = getSemester(semesterId);
-    const semesterCourses = semester ? semester.courses : [];
-    setCourses(semesterCourses);
-    setTotalUnits(semesterCourses.reduce((sum, c) => sum + c.units, 0));
+    return getSemesterById(semesterId) ?? null;
+  }, [semesterId, semesters]);
+  const courses = semester?.courses ?? [];
+  const totalUnits = semester?.units ?? 0;
+
+  useEffect(() => {
+    // if (!semesterId) return;
+    // const semester = getSemesterById(semesterId);
+    // const semesterCourses = semester ? semester.courses : [];
+    // setCourses(semesterCourses);
+    // setTotalUnits(semesterCourses.reduce((sum, c) => sum + c.units, 0));
   }, [semesterId]);
 
   const randomCompletion = 56;
@@ -44,69 +45,87 @@ const SemesterPage = () => {
     if (!name || !code || !units) return;
 
     const newCourse = {
-      id: String(courses.length + 1),
-      name,
-      code,
+      id: crypto.randomUUID().split("-")[0],
+      name: capitalizeWords(name),
+      code: code.toUpperCase(),
       units: Number(units),
     };
-    setCourses((prev) => [...prev, newCourse]);
-    addCourse(semesterId, newCourse);
+    // setCourses((prev) => [...prev, newCourse]);
+    addCourseToSemester(semesterId, newCourse);
     form.reset();
   }
+  if (!semester)
+    return (
+      <div className="p-6 min-h-screen bg-[url('/images/bg-soft-light.png')] dark:bg-[url('/images/bg-soft-dark.png')] bg-cover bg-repeat bg-center relative space-y-8">
+        <div>Semester not found</div>
+      </div>
+    );
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-6 min-h-screen bg-[url('/images/bg-soft-light.png')] dark:bg-[url('/images/bg-soft-dark.png')] bg-cover bg-repeat bg-center relative space-y-8">
       {/* Header */}
-      <h1 className="text-2xl font-bold text-gray-800">Semester 1 Overview</h1>
+      <h1 className="text-2xl font-bold text-gray-800">
+        {semester?.name} Overview
+      </h1>
 
       {/* Overview Stats */}
       <div className="flex overflow-x-auto py-4 px-2 scrollbar gap-6">
         <motion.div
-          className="bg-white min-w-[200px] flex-shrink-0 rounded-2xl shadow-lg p-4 flex flex-col items-center"
+          className="bg-white dark:bg-glass border-2 dark:border-gray-400 min-w-[200px] flex-shrink-0 rounded-2xl shadow-lg p-4 flex flex-col items-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <GPAGauge gpa={gpa} />
-          <p className="mt-2 font-semibold text-gray-600">GPA</p>
+          <p className="mt-2  dark:text-gray-300 font-semibold text-gray-600">
+            GPA
+          </p>
         </motion.div>
 
         <motion.div
-          className="bg-white min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
+          className="bg-white dark:bg-glass border-2 dark:border-gray-400 min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <p className="text-gray-600">Courses</p>
+          <p className="text-gray-600  dark:text-gray-300 font-semibold">
+            Courses
+          </p>
           <p className="text-4xl font-bold text-blue-600">{courses.length}</p>
         </motion.div>
 
         <motion.div
-          className="bg-white min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
+          className="bg-white dark:bg-glass border-2 dark:border-gray-400 min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-gray-600">Units</p>
+          <p className="text-gray-600  dark:text-gray-300 font-semibold">
+            Units
+          </p>
           <p className="text-4xl font-bold text-green-600">{totalUnits}</p>
         </motion.div>
 
         <motion.div
-          className="bg-white min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
+          className="bg-white dark:bg-glass border-2 dark:border-gray-400 min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <p className="text-gray-600">Completion</p>
+          <p className="text-gray-600  dark:text-gray-300 font-semibold">
+            Completion
+          </p>
           <p className="text-3xl font-bold  text-pink-800">
             {randomCompletion}%
           </p>
         </motion.div>
         <motion.div
-          className="bg-white min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
+          className="bg-white dark:bg-glass border-2 dark:border-gray-400 min-w-[200px] flex flex-col gap-3 justify-center flex-shrink-0 rounded-2xl shadow-lg p-6 text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <p className="text-gray-600">Days to Exam</p>
+          <p className="text-gray-600  dark:text-gray-300 font-semibold">
+            Days to Exam
+          </p>
           <p className="text-3xl font-bold  text-red-800">27</p>
         </motion.div>
       </div>
@@ -173,24 +192,27 @@ const SemesterPage = () => {
                 <Link to={`courses/${course.id}`} key={idx}>
                   <motion.div
                     key={idx}
-                    className="w-[200px] bg-white shadow rounded-2xl p-4 flex-shrink-0"
+                    className="w-[200px] bg-neumorphic dark:bg-neumorphic-dark shadow rounded-2xl p-4 flex-shrink-0"
                     whileHover={{ scale: 1.05 }}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ delay: idx * 0.1, duration: 0.4 }}
                   >
-                    <h3 className="font-bold text-gray-800">{course.code}</h3>
+                    <h3 className="font-bold text-gray-800 uppercase dark:text-gray-200">
+                      {course.code}
+                    </h3>
 
                     <p
                       title={course.name}
-                      className="truncate capitalize text-gray-600"
+                      className="truncate capitalize text-gray-600 dark:text-gray-400"
                     >
                       {course.name}
                     </p>
-                    <div className="mt-3 text-sm text-gray-500">
+                    <div className="mt-3 text-sm text-gray-500 dark:text-gray-400">
                       <p>Units: {course.units}</p>
                       <p>Grade: {course.grade || "-"}</p>
+                      <p>Topics: {course.topics?.length ?? 0}</p>
                     </div>
                   </motion.div>
                 </Link>
@@ -242,52 +264,54 @@ const SemesterPage = () => {
                   <td className="p-3">{c.code}</td>
                   <td className="p-3">{c.units}</td>
                   <td className="p-3">{c.grade}</td>
-                  <AppDialog
-                    triggerLabel="Edit"
-                    title="Add a new course"
-                    description="Fill in the course details below."
-                  >
-                    <form
-                      className="space-y-2"
-                      onSubmit={() => {
-                        handleEdit(c.id);
-                      }}
+                  <td>
+                    <AppDialog
+                      triggerLabel="Edit"
+                      title="Add a new course"
+                      description="Fill in the course details below."
                     >
-                      <label htmlFor="course-code" className="w-full">
-                        <input
-                          type="text"
-                          name="course-code"
-                          id="course-code"
-                          placeholder="Course Code"
-                          className="border rounded-md uppercase placeholder:capitalize"
-                        />
-                      </label>
-                      <label htmlFor="course-name" className="w-full">
-                        <input
-                          type="text"
-                          name="course-name"
-                          id="course-name"
-                          placeholder="Course Name"
-                          className=" border rounded-md uppercase  placeholder:capitalize"
-                        />
-                      </label>
-                      <label htmlFor="course-units" className="w-full">
-                        <input
-                          type="number"
-                          name="course-units"
-                          id="course-units"
-                          placeholder="Units"
-                          className=" border rounded-md "
-                        />
-                      </label>
-                      <Button
-                        type="submit"
-                        className="primary-button text-white w-fit ml-auto"
+                      <form
+                        className="space-y-2"
+                        onSubmit={() => {
+                          handleEdit(c.id);
+                        }}
                       >
-                        Save
-                      </Button>
-                    </form>
-                  </AppDialog>
+                        <label htmlFor="course-code" className="w-full">
+                          <input
+                            type="text"
+                            name="course-code"
+                            id="course-code"
+                            placeholder="Course Code"
+                            className="border rounded-md uppercase placeholder:capitalize"
+                          />
+                        </label>
+                        <label htmlFor="course-name" className="w-full">
+                          <input
+                            type="text"
+                            name="course-name"
+                            id="course-name"
+                            placeholder="Course Name"
+                            className=" border rounded-md uppercase  placeholder:capitalize"
+                          />
+                        </label>
+                        <label htmlFor="course-units" className="w-full">
+                          <input
+                            type="number"
+                            name="course-units"
+                            id="course-units"
+                            placeholder="Units"
+                            className=" border rounded-md "
+                          />
+                        </label>
+                        <Button
+                          type="submit"
+                          className="primary-button text-white w-fit ml-auto"
+                        >
+                          Save
+                        </Button>
+                      </form>
+                    </AppDialog>
+                  </td>
                 </tr>
               ))}
               <tr className="bg-gray-50 font-semibold text-gray-600">
