@@ -17,9 +17,10 @@ import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ThemeToggle from "./components/ThemeToggle";
 import { Amplify } from "aws-amplify";
-import outputs from "../amplify_outputs.json";
+// import outputs from "../amplify_outputs.json";
 import Header from "./components/Header";
-Amplify.configure(outputs);
+import { amplifyConfig } from "./lib/amplify-config";
+Amplify.configure(amplifyConfig);
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
