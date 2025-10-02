@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <header
-      className={`flex items-center px-6 py-4 md:py-6 sticky top-0 z-50 transition-colors duration-300 justify-center ${
+      className={`flex items-center px-6 py-4 md:py-6 sticky top-0 z-11 transition-colors duration-300 justify-center ${
         isScrolled
           ? "bg-glass shadow-md backdrop-blur-xl"
           : "bg-white dark:bg-gray-900"

@@ -1,4 +1,5 @@
 // src/pages/AuthPage.tsx
+import { fetchAuthSession } from "aws-amplify/auth";
 import { useEffect } from "react";
 import { Authenticator } from "@aws-amplify/ui-react";
 import { useNavigate } from "react-router";
@@ -21,9 +22,11 @@ export default function AuthPage() {
       >
         {({ signOut, user }) => {
           // Show success message before redirecting
-          // setTimeout(() => {
-          //   navigate("/dashboard");
-          // }, 2500);
+          console.log(user?.signInDetails);
+
+          setTimeout(() => {
+            // navigate("/dashboard");
+          }, 2500);
 
           return (
             <div className="flex flex-col items-center gap-4 text-center p-6">
@@ -72,3 +75,6 @@ export default function AuthPage() {
     </div>
   );
 }
+
+console.log("sfjvskhdjs");
+fetchAuthSession().then((data) => console.log(data));

@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { motion } from "framer-motion";
 interface IAppDialog {
   triggerLabel?: string;
+  triggerClassName?: string; // <- NEW
   title?: string;
   description?: string;
   children: React.ReactNode;
@@ -19,6 +20,7 @@ const AppDialog: React.FC<IAppDialog> = ({
   triggerLabel = "Open",
   title = "Dialog Title",
   description = "",
+  triggerClassName = "",
   children,
 }) => {
   return (
@@ -29,7 +31,7 @@ const AppDialog: React.FC<IAppDialog> = ({
           animate={{ opacity: 1, x: 0 }}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
-          className="primary-gradient text-white font-semibold rounded-full py-4 px-6 w-fit "
+          className={`bg-green-700 text-white font-semibold rounded-full p-3 primary-gradient border-1 border-transparent w-fit ${triggerClassName}`}
         >
           {triggerLabel}
         </motion.button>

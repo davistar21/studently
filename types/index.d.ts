@@ -13,6 +13,7 @@ export interface Course {
   progress?: number;
   grade?: string;
   topics?: Topic[];
+  notes?: Note[];
 }
 
 export interface Semester {
@@ -21,3 +22,42 @@ export interface Semester {
   units: number;
   courses: Course[];
 }
+
+export interface Note {
+  id: string;
+  title: string;
+}
+/*
+type Topic @model {
+  id: ID!
+  title: String!
+  status: String!
+  progress: Int
+  course: Course @connection
+}
+
+type Course @model {
+  id: ID!
+  name: String!
+  units: Int!
+  code: String!
+  progress: Int
+  grade: String
+  topics: [Topic] @connection
+  semester: Semester @connection
+}
+
+type Semester @model {
+  id: ID!
+  name: String!
+  units: Int!
+  courses: [Course] @connection
+}
+
+type Note @model {
+  id: ID!
+  title: String!
+  content: String
+  semester: Semester @connection
+}
+*/

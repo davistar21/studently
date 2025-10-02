@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import type { Topic } from "types/store";
+import type { Topic } from "types";
 import { useState } from "react";
 
 const STATUS_PROGRESS_MAP: Record<Topic["status"], number> = {
@@ -32,19 +32,27 @@ const TopicDeck = ({ topics }: { topics: Topic[] }) => {
 
   return (
     <div className="flex scrollbar gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
-      {topics.map((topic) => {
+      {topics.map((topic, idx) => {
         const currentStatus = topicStatuses[topic.id];
-        const progress = STATUS_PROGRESS_MAP[currentStatus];
+        const progress = STATUS_PROGRESS_MAP[currentStatus] || 0;
         topic.progress = progress;
 
         return (
           <motion.div
             key={topic.id}
-            className="min-w-[250px] bg-white text-gray-800 rounded-xl shadow p-4 flex flex-col justify-between min-h-[150px] snap-start"
-            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.4, delay: idx * 0.2 }}
+            className="min-w-[250px] relative bg-transparent border-none dark:bg-neumorphic-dark-2 text-gray-800 dark:text-gray-200 rounded-xl shadow flex flex-col justify-between min-h-[150px] snap-start group"
+            whileHover={{ scale: 1.01 }}
           >
-            {/* Topic name */}
-            <p className="font-semibold mb-2 text-clamp text-center capitalize">
+            <div
+                className="absolute inset-0 rounded-2xl opacity-40 blur-[6px] z-0 transition-all duration-500 border-none  group-hover:opacity-70 group-hover:blur-sm bg-gradient-to-br from-[#0078ff] to-red-300 dark:from-green-200 dark:to-red-700"
+                
+              ></div>
+<div className="relative h-full z-10 bg-neumorphic transition-all duration-500 min-w-[250px] dark:bg-neumorphic-dark-2 text-gray-800 dark:text-gray-200 rounded-xl  p-4 flex flex-col justify-between min-h-[150px] snap-start">
+            <p className="font-semibold mb-2 text-clamp text-left capitalize">
               {topic.title}
             </p>
 
@@ -75,7 +83,9 @@ const TopicDeck = ({ topics }: { topics: Topic[] }) => {
                 <SelectItem value="completed">Completed</SelectItem>
               </SelectContent>
             </Select>
+            </div>
           </motion.div>
+
         );
       })}
     </div>

@@ -19,7 +19,8 @@ import ThemeToggle from "./components/ThemeToggle";
 import { Amplify } from "aws-amplify";
 // import outputs from "../amplify_outputs.json";
 import Header from "./components/Header";
-import { amplifyConfig } from "./lib/amplify-config";
+import amplifyConfig  from "./lib/amplify-config";
+
 Amplify.configure(amplifyConfig);
 
 export const links: Route.LinksFunction = () => [

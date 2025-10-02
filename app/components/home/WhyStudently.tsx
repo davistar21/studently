@@ -59,7 +59,6 @@ export default function WhyStudently() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: index * 0.2, duration: 0.4 }}
             >
-              {/* Glow effect */}
               <div
                 className="absolute inset-0 rounded-2xl opacity-40 blur-[6px] z-0 transition-all duration-500 group-hover:opacity-70 group-hover:blur-sm"
                 style={{
@@ -67,8 +66,7 @@ export default function WhyStudently() {
                 }}
               ></div>
 
-              {/* Actual Card */}
-              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-[8px_8px_16px_#d1d5db,-8px_-8px_16px_#ffffff] dark:shadow-none bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 hover:shadow-md ">
+              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-[8px_8px_16px_#d1d5db,-8px_-8px_16px_#ffffff] dark:shadow-none bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 ">
                 <div
                   className="w-14 h-14 flex items-center justify-center rounded-xl mb-4 dark:text-black"
                   style={{

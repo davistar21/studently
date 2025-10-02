@@ -64,7 +64,7 @@ export default function HowItWorks() {
               className="relative group min-h-[250px]"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ delay: index * 0.2, duration: 0.4 }}
             >
               {/* Glow effect */}
@@ -76,7 +76,7 @@ export default function HowItWorks() {
               ></div>
 
               {/* Actual Card */}
-              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 hover:shadow-none">
+              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500">
                 <div
                   className="w-14 h-14 flex items-center justify-center rounded-xl mb-4 dark:text-black"
                   style={{
