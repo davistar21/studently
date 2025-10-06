@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import formatSize from "~/utils/formatSize";
 
 interface FileUploaderProps {
-  onFileSelect?: (fil: File | null) => void;
+  onFileSelect?: (file: File | null) => void;
 }
 const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -19,7 +19,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
     onDrop,
     multiple: false,
     accept: { "/application/pdf": [".pdf"] },
-    maxSize: 20 * 1024 * 1024,
+    maxSize: 5 * 1024 * 1024,
   });
 
   const file = acceptedFiles[0] || null;
@@ -62,7 +62,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
               <span className="font-semibold">Click to upload</span> or drag and
               drop
             </p>
-            <p className="text-lg text-gray-500 text-center">PDF (max 20mb)</p>
+            <p className="text-lg text-gray-500 text-center">PDF (max 5mb)</p>
           </div>
         )}
       </div>

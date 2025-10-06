@@ -3,16 +3,21 @@ import { Link } from "react-router";
 import AppDialog from "~/components/AppDialog";
 import { Button } from "~/components/ui/button";
 import capitalizeWords from "~/utils/capitalizeWords";
-import {type FormEvent, useState } from 'react';
-import type { Course } from 'types';
+import { type FormEvent, useState } from "react";
+import type { CourseData } from "types";
 import FileUploader from "../FileUploader";
 
 type CourseListProp = {
-  courses: Course[];
-  addCourse: (course: Course) => void;
+  semesterId: string;
+  courses: CourseData[];
+  addCourse: (course: CourseData) => void;
 };
 
-const CourseList: React.FC<CourseListProp> = ({ courses, addCourse }) => {
+const CourseList: React.FC<CourseListProp> = ({
+  semesterId,
+  courses,
+  addCourse,
+}) => {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget.closest("form");
@@ -29,6 +34,8 @@ const CourseList: React.FC<CourseListProp> = ({ courses, addCourse }) => {
       name: capitalizeWords(name),
       code: code.toUpperCase(),
       units: Number(units),
+      topics: [],
+      semesterId,
     };
 
     addCourse(newCourse);
@@ -38,12 +45,10 @@ const CourseList: React.FC<CourseListProp> = ({ courses, addCourse }) => {
   return (
     <div>
       <div className="flex mb-4 justify-between items-center">
-        {courses.length !== 0 && (
-          <h2 className="text-xl font-semibold text-gray-800">Courses</h2>
-        )}
+        <h2 className="text-xl font-semibold text-gray-800">Courses</h2>
         <div className="flex gap-2">
           <AppDialog
-            triggerClassName="!bg-gray-200 dark:!bg-gray-800 !text-gray-600 dark:!text-gray-200 rounded-md !border-gray-500"
+            triggerClassName=""
             triggerLabel="Upload Outline"
             title="Add Course Outline"
             description="Upload file to extract courses and topics"
@@ -107,7 +112,7 @@ const CourseList: React.FC<CourseListProp> = ({ courses, addCourse }) => {
       </div>
 
       <div className="flex gap-6 scrollbar overflow-x-auto pb-4">
-        {courses.length !== 0 &&
+        {courses.length !== 0 ? (
           courses.map((course, idx) => (
             <Link to={`courses/${course.id}`} key={idx}>
               <motion.div
@@ -134,7 +139,12 @@ const CourseList: React.FC<CourseListProp> = ({ courses, addCourse }) => {
                 </div>
               </motion.div>
             </Link>
-          ))}
+          ))
+        ) : (
+          <div className="my-6 text-center text-gray-500 animate-pulse">
+            No courses added yet.
+          </div>
+        )}
       </div>
     </div>
   );

@@ -3,16 +3,14 @@ import { BookOpen, GraduationCap, Calendar, BarChart3 } from "lucide-react";
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       {/* Header */}
-      {/* <header className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-blue-600">
-          Studently Dashboard
-        </h1>
+      <header className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold text-blue-600">Welcome, User</h1>
         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
           Logout
         </button>
-      </header> */}
+      </header>
 
       {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

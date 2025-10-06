@@ -24,7 +24,7 @@ function SelectValue({
 
 function SelectTrigger({
   className,
-  size = "default",
+  size,
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {

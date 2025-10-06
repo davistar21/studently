@@ -22,14 +22,14 @@ export default function AuthPage() {
       >
         {({ signOut, user }) => {
           // Show success message before redirecting
-          console.log(user?.signInDetails);
 
           setTimeout(() => {
-            // navigate("/dashboard");
+            navigate("/dashboard");
           }, 2500);
 
           return (
             <div className="flex flex-col items-center gap-4 text-center p-6">
+              <button onClick={signOut}>signOut</button>
               <motion.div
                 className="border-2 border-[#28a745] rounded-full p-4"
                 initial={{ opacity: 0, y: 30 }}
@@ -76,5 +76,6 @@ export default function AuthPage() {
   );
 }
 
-console.log("sfjvskhdjs");
-fetchAuthSession().then((data) => console.log(data));
+// console.log("sfjvskhdjs");
+// console.log(fetchAuthSession);
+// fetchAuthSession().then((data) => console.log("data", data));

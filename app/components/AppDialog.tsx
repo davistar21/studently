@@ -8,8 +8,9 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
+import type { JSX } from "react";
 interface IAppDialog {
-  triggerLabel?: string;
+  triggerLabel?: string | JSX.Element;
   triggerClassName?: string; // <- NEW
   title?: string;
   description?: string;
@@ -31,7 +32,7 @@ const AppDialog: React.FC<IAppDialog> = ({
           animate={{ opacity: 1, x: 0 }}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
-          className={`bg-green-700 text-white font-semibold rounded-full p-3 primary-gradient border-1 border-transparent w-fit ${triggerClassName}`}
+          className={`bg-green-700 primary-gradient text-white font-semibold rounded-md p-3 border-1 border-transparent w-fit ${triggerClassName}`}
         >
           {triggerLabel}
         </motion.button>

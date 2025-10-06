@@ -1,6 +1,6 @@
-import { type ClientSchema, a, defineData } from '@aws-amplify/backend'
+import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-const schema = a.schema({
+export const schema = a.schema({
   Profile: a
     .model({
       id: a.id().required(),
@@ -9,52 +9,57 @@ const schema = a.schema({
       createdAt: a.datetime().required(),
       updatedAt: a.datetime().required(),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow: any) => [allow.owner()]),
 
   Semester: a
     .model({
-      id: a.id().required(),
+      id: a.string().required(),
       name: a.string().required(),
       units: a.integer().required(),
+      owner: a.string().authorization((allow) => [allow.owner()]),
+      courses: a.hasMany("Course", "semesterId"),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow: any) => [allow.owner()]),
 
   Course: a
     .model({
       id: a.id().required(),
       name: a.string().required(),
-      code: a.string(),
+      code: a.string().required(),
       units: a.integer().required(),
       grade: a.string(),
       progress: a.integer(),
-      semesterId: a.id().required(), // foreign key to Semester
+      semesterId: a.id().required(),
+      semester: a.belongsTo("Semester", "semesterId"),
+      owner: a.string().authorization((allow) => [allow.owner()]),
+
+      topics: a.hasMany("Topic", "courseId"),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow: any) => [allow.owner()]),
 
   Topic: a
     .model({
       id: a.id().required(),
       title: a.string().required(),
-      status: a.enum(["not_started", "in_progress", "not_completed", "completed"]),
       progress: a.integer(),
-      courseId: a.id().required(), // foreign key to Course
+      status: a.enum([
+        "not_started",
+        "in_progress",
+        "not_completed",
+        "completed",
+      ]),
+      courseId: a.id().required(),
+      course: a.belongsTo("Course", "courseId"),
+      owner: a.string().authorization((allow) => [allow.owner()]),
     })
-    .authorization((allow) => [allow.owner()]),
+    .authorization((allow: any) => [allow.owner()]),
+});
 
-  Note: a
-    .model({
-      id: a.id().required(),
-      title: a.string().required(),
-      courseId: a.id().required(), // foreign key to Course
-    })
-    .authorization((allow) => [allow.owner()]),
-})
-
-export type Schema = ClientSchema<typeof schema>
+export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'identityPool',
+    defaultAuthorizationMode: "userPool",
   },
-})
+});
