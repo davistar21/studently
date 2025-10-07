@@ -1,7 +1,6 @@
 const amplifyConfig = {
   Auth: {
     Cognito: true,
-    // make sure sign-in is required before credentials are requested
     mandatorySignIn: true,
   },
   aws_project_region: import.meta.env.VITE_AWS_REGION,

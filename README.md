@@ -1,6 +1,27 @@
+# STUDENTLY
+
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![AWS](https://img.shields.io/badge/Backend-AWS-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
+
+
+## 📚 Table of Contents
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [Getting Started](#getting-started)
+- [Development](#development)
+- [Building for Production](#building-for-production)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [Styling](#styling)
+- [Screenshots](#screenshots)
+
+
 ## Project overview
 
 Studently unifies course management, assignment tracking, GPA calculation, and AI-assisted study tools (summaries and question generation). It was implemented as a React + TypeScript frontend (React Router v7) and an AWS Amplify backend relying on Lambda functions (business logic) and API Gateway for endpoint exposure. Amazon Bedrock is used for AI summarization and Q&A, S3 is used for storing course resources, DynamoDB for storing metadata, and CloudWatch for monitoring logs.
+
+![Dashboard](./public/studently-dashboard.jpeg)
 
 ## Key Features
 
@@ -13,6 +34,8 @@ Studently unifies course management, assignment tracking, GPA calculation, and A
 - Backend logic implemented as AWS Lambda functions invoked through API Gateway (fronted by Amplify configuration)
 
 Note about Amazon Q: The project was directed to include Amazon Q as part of the hackathon brief, but Amazon Q access (QBusiness) requires organizational access.
+
+
 ## Getting Started
 
 ### Installation
@@ -63,6 +86,7 @@ The containerized application can be deployed to any platform that supports Dock
 - Fly.io
 - Railway
 
+
 ### DIY Deployment
 
 If you're familiar with deploying Node applications, the built-in app server is production-ready.
@@ -77,9 +101,25 @@ Make sure to deploy the output of `npm run build`
 │   └── server/    # Server-side code
 ```
 
+![Landing](./public/studently-landing-top.png)
+
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-name`.
+3. Make your changes.
+4. Push your branch: `git push origin feature-name`.
+5. Create a pull request.
+
+
 ## Styling
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
 
 ---
 

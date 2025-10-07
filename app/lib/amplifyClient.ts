@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { generateClient } from "aws-amplify/data";
 
@@ -12,14 +12,4 @@ import type { Schema } from "../../amplify/data/resource";
 
 export const client = generateClient<Schema>();
 
-
-// This client can now be used throughout the application to interact with the data models. 
-
-
-
-
-
-
-
-
-
+// This client can now be used throughout the application to interact with the data models.

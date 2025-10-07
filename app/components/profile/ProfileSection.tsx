@@ -14,7 +14,6 @@ export default function ProfileSection({
 }: {
   profile: ProfileProps | null;
 }) {
-  console.log(" profile in section", profile);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [statusText, setStatusText] = useState("Loading profile...");
