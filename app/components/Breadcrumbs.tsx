@@ -16,6 +16,7 @@ import {
 import { Link, useLocation } from "react-router";
 import { Fragment, useEffect, useState } from "react";
 import { useAppStore } from "~/lib/zustandStore";
+import capitalizeWords from "~/utils/capitalizeWords";
 
 export default function Breadcrumbs() {
   const location = useLocation();
@@ -60,6 +61,8 @@ export default function Breadcrumbs() {
             console.error("Failed to load breadcrumb names", err);
           }
         }
+      } else {
+        crumbs.push({ label: capitalizeWords(segments[0]) });
       }
 
       setBreadcrumbs(crumbs);

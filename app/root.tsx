@@ -25,7 +25,6 @@ import Chatbot from "./components/Chatbot";
 Amplify.configure(
   // amplifyConfig
   outputs
-  // make sure sign-in is required before credentials are requested
 );
 
 export const links: Route.LinksFunction = () => [
@@ -66,7 +65,7 @@ export default function App() {
   const location = useLocation();
   const isSidebarVisible = !noSidebarPaths.includes(location.pathname);
   return (
-    <SidebarProvider>
+    <SidebarProvider className="bg-gray-50 dark:bg-gray-900">
       {/* <div className="app-container flex lg:flex-row flex-col"> */}
       {/* <NavBar /> */}
       {isSidebarVisible && (

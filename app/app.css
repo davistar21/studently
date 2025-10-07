@@ -7,8 +7,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: "Mona Sans", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "Mona Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --color-dark-200: #475467;
   --color-light-blue-100: #c1d3f81a;
   --color-light-blue-200: #a7bff14d;
@@ -34,7 +35,7 @@ body {
 
 main {
   /* background: linear-gradient(135deg, #c5fffeb1, #e2e2ff); */
-  @apply min-h-screen w-full;
+  @apply min-h-screen w-full bg-gray-50 dark:bg-gray-900;
 }
 h1 {
   @apply text-5xl lg:text-[84px] text-gradient dark:text-gradient-2 leading-tight tracking-[-2px] font-semibold;
@@ -105,11 +106,15 @@ form {
 }
 /* Neumorphism shadows */
 .shadow-neu {
-  box-shadow: 6px 6px 12px #d1d5db, -6px -6px 12px #ffffff;
+  box-shadow:
+    6px 6px 12px #d1d5db,
+    -6px -6px 12px #ffffff;
 }
 
 .shadow-neu-red {
-  box-shadow: 6px 6px 12px #f9d6d5, -6px -6px 12px #ffffff;
+  box-shadow:
+    6px 6px 12px #f9d6d5,
+    -6px -6px 12px #ffffff;
 }
 /* Normal mode scrollbar */
 .custom-scrollbar {
@@ -244,15 +249,21 @@ form {
 }
 @utility bg-neumorphic {
   background: #fafafa;
-  box-shadow: inset -15px -15px 30px #eeeeee, inset 15px 15px 30px #ffffff;
+  box-shadow:
+    inset -15px -15px 30px #eeeeee,
+    inset 15px 15px 30px #ffffff;
 }
 @utility bg-neumorphic-dark {
   background: #172754;
-  box-shadow: inset -23px -23px 46px #101c3c, inset 23px 23px 46px #1e326c;
+  box-shadow:
+    inset -23px -23px 46px #101c3c,
+    inset 23px 23px 46px #1e326c;
 }
 @utility bg-neumorphic-dark-2 {
   background: #04222f;
-  box-shadow: inset -18px -18px 29px #031720, inset 18px 18px 29px #052d3e;
+  box-shadow:
+    inset -18px -18px 29px #031720,
+    inset 18px 18px 29px #052d3e;
 }
 @utility text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-[#AB8C95] via-[#000000] to-[#8E97C5];

@@ -5,6 +5,8 @@ export const schema = a.schema({
     .model({
       id: a.id().required(),
       username: a.string().required(),
+      firstName: a.string().required(),
+      lastName: a.string().required(),
       email: a.email().required(),
       createdAt: a.datetime().required(),
       updatedAt: a.datetime().required(),

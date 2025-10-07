@@ -35,6 +35,7 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar";
 import Logo from "./logo";
+import { Authenticator } from "@aws-amplify/ui-react";
 
 // Menu items.
 const items = [
@@ -96,7 +97,7 @@ export function AppSidebar() {
         </SidebarGroup>
         <SidebarFooter className="flex items-start gap-2 mt-auto">
           <Link
-            to="#"
+            to="/profile"
             className="flex gap-2 w-full p-3 rounded-md text-sm bg-gray-100 items-center dark:bg-gray-900 border-1 dark:border-gray-600 dark:text-white"
           >
             <User2Icon />
@@ -104,7 +105,7 @@ export function AppSidebar() {
           </Link>
 
           <Link
-            to="#"
+            to="/settings"
             className="flex gap-2 w-full p-3 rounded-md text-sm bg-gray-100 items-center dark:bg-gray-900 border-1 dark:border-gray-600 dark:text-white"
           >
             <Settings />
@@ -112,11 +113,15 @@ export function AppSidebar() {
           </Link>
 
           <Link
-            to="#"
-            className="flex gap-2 text-red-600 bg-red-100 w-full p-3 rounded-md text-sm items-center dark:bg-gray-900 border-1 dark:border-gray-600 dark:text-white"
+            to="/"
+            className="flex gap-2 text-red-600 bg-red-100 w-full p-3 rounded-md text-sm items-center dark:bg-gray-900 border-1 dark:border-gray-600 dark:text-red-500 font-semibold !text-[16px]"
           >
-            <LogOut className="text-red-700" />
-            <div>Logout</div>
+            <LogOut />
+            <div>
+              <Authenticator>
+                {({ signOut }) => <button onClick={signOut}>Logout</button>}
+              </Authenticator>
+            </div>
           </Link>
         </SidebarFooter>
       </SidebarContent>

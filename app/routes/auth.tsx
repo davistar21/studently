@@ -5,6 +5,14 @@ import { Authenticator } from "@aws-amplify/ui-react";
 import { useNavigate } from "react-router";
 import "@aws-amplify/ui-react/styles.css";
 import { motion } from "framer-motion";
+import type { Route } from "../+types/root";
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Studently | Auth" },
+    { name: "description", content: "Login or Sign up to Studently" },
+  ];
+}
+
 export default function AuthPage() {
   const navigate = useNavigate();
 
@@ -14,7 +22,7 @@ export default function AuthPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#192c43]">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#192c43] ">
       <Authenticator
         loginMechanisms={["email"]}
         signUpAttributes={["email"]}
@@ -22,14 +30,16 @@ export default function AuthPage() {
       >
         {({ signOut, user }) => {
           // Show success message before redirecting
-
+          async () => {
+            await fetchAuthSession();
+          };
           setTimeout(() => {
-            navigate("/dashboard");
-          }, 2500);
+            navigate("/profile");
+          }, 1500);
 
           return (
             <div className="flex flex-col items-center gap-4 text-center p-6">
-              <button onClick={signOut}>signOut</button>
+              {/* <button onClick={signOut}>signOut</button> */}
               <motion.div
                 className="border-2 border-[#28a745] rounded-full p-4"
                 initial={{ opacity: 0, y: 30 }}
@@ -58,7 +68,7 @@ export default function AuthPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Welcome, {user?.username}!
+                Welcome!
               </motion.h2>
               <motion.p
                 className="text-green-600"
@@ -76,6 +86,6 @@ export default function AuthPage() {
   );
 }
 
-// console.log("sfjvskhdjs");
+// console.log("sfjvskhdjs"); session.tokens.signInDetails.loginId;session.tokens.userSub
 // console.log(fetchAuthSession);
 // fetchAuthSession().then((data) => console.log("data", data));

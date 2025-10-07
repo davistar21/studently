@@ -20,7 +20,9 @@ const SemesterOverview = ({ semester }: { semester: SemesterData }) => {
   let semesterProgress = 0;
   const allCourses = semesters.flatMap((s) => s.courses || []);
   const allCoursesTopics = allCourses.flatMap((c) => c.topics || []);
-  allCoursesTopics.forEach(t=>t.progress && (semesterProgress += t.progress));
+  allCoursesTopics.forEach(
+    (t) => t.progress && (semesterProgress += t.progress)
+  );
   semesterProgress = Math.ceil(semesterProgress / allCoursesTopics.length) || 0;
   const gpa = useMemo(() => calculateGPA(semester.id!), [semester]);
   // const courses = semester.courses ?? [];
@@ -40,9 +42,7 @@ const SemesterOverview = ({ semester }: { semester: SemesterData }) => {
       setIsLoading(true);
       await SemesterAPI.update({ ...semester, name: semesterName! });
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to update semester"
-      );
+      setError("Failed to update semester");
       console.error("Failed to update semester", err);
     } finally {
       setIsLoading(false);
@@ -127,10 +127,10 @@ const SemesterOverview = ({ semester }: { semester: SemesterData }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <p className="text-gray-600  dark:text-gray-300 font-semibold">
+          <p className="text-gray-600 dark:text-gray-300 font-semibold">
             Completion
           </p>
-          <p className="text-3xl font-bold  text-pink-800">
+          <p className="text-3xl font-bold text-pink-800 dark:text-pink-400">
             {semesterProgress ?? 0}%
           </p>
         </motion.div>

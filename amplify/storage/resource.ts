@@ -6,7 +6,6 @@ export const storage = defineStorage({
     "public/*": [allow.guest.to(["read"])],
     "private/{identityId}/*": [
       allow.authenticated.to(["read", "write", "delete"]),
-      // allow.groups(["Admins"]).to(["read", "write", "delete"]),
     ],
   }),
 });

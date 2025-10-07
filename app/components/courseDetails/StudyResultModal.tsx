@@ -4,7 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { useMedia } from "use-media";
-
+import { downloadSummaryPdf } from "~/utils/downloadPdf";
+import { Download } from "lucide-react";
 interface Flashcard {
   question: string;
   answer: string;
@@ -15,6 +16,7 @@ interface StudyResultModalProps {
   onClose: () => void;
   flashcards: Flashcard[];
   summary: string;
+  file: File | null;
 }
 
 // const flashcards: Flashcard[] = [
@@ -45,6 +47,7 @@ export const StudyResultModal: React.FC<StudyResultModalProps> = ({
   onClose,
   flashcards,
   summary,
+  file,
 }) => {
   const isMobile = useMedia("(max-width: 768px)");
   const [flipped, setFlipped] = React.useState<Record<number, boolean>>({});
@@ -89,10 +92,22 @@ export const StudyResultModal: React.FC<StudyResultModalProps> = ({
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Study Results</h2>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">
-                  Save
+                <Button size="sm" variant="outline">
+                  Regenerate
                 </Button>
-                <Button size="sm">Regenerate</Button>
+
+                <Button
+                  onClick={() =>
+                    downloadSummaryPdf({
+                      title: `Study Summary - ${file?.name ? ` - ${file?.name}` : ""}`,
+                      summary,
+                      flashcards,
+                    })
+                  }
+                >
+                  Download PDF
+                  <Download />
+                </Button>
               </div>
             </div>
 

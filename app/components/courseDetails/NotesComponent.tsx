@@ -85,15 +85,27 @@ const Notes = () => {
   //   console.log("parsedcontent",parsedcontent);
   // const {flashcards,summary}=parsedcontent;
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
-    setStatusText("Uploading note...");
-    e.preventDefault();
-    if (!file || !userId || !s3Client || !semesterId || !courseId) return;
-    const note = await uploadNote(s3Client, file, userId, semesterId, courseId);
-    setNotes((prev) => [...prev, note]);
-    const form = e.currentTarget.closest("form");
-    if (!form) return;
-    form.reset();
+    try {
+      setIsLoading(true);
+      setStatusText("Uploading note...");
+      e.preventDefault();
+      if (!file || !userId || !s3Client || !semesterId || !courseId) return;
+      const note = await uploadNote(
+        s3Client,
+        file,
+        userId,
+        semesterId,
+        courseId
+      );
+      setNotes((prev) => [...prev, note]);
+
+      setFile(null);
+    } catch (err) {
+      console.error("Error uploading file", err);
+      setError("Failed to upload note");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDelete = async (id: string) => {
@@ -102,6 +114,7 @@ const Notes = () => {
     if (!s3Client) return;
     await deleteNote(s3Client, id);
     setNotes((prev) => prev.filter((n) => n.id !== id));
+    setIsLoading(false);
   };
 
   const handleAIAction = async (noteId: string) => {
@@ -153,6 +166,7 @@ const Notes = () => {
         onClose={() => setOpen(false)}
         flashcards={flashcards}
         summary={summary}
+        file={file}
       />
       {notes.length === 0 ? (
         <p className="text-gray-500">No notes uploaded yet.</p>
@@ -161,7 +175,7 @@ const Notes = () => {
           {notes.map((note, i) => (
             <div
               key={note.id}
-              className="flex items-center justify-between border p-3 rounded-md"
+              className="flex items-center justify-between border border-gray-500 p-3 rounded-md backdrop-blur bg-white/20 dark:bg-gray-900/30"
             >
               <div>
                 <p className="text-clamp-single">{note.title}</p>

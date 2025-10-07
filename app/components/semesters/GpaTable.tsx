@@ -46,7 +46,7 @@ const GPATable: React.FC<GPATableProp> = ({ courses, semester }) => {
           hasNext: () => false,
           next: async () => ({ items: [], hasNext: () => false }),
         }),
-      };  
+      };
       await CourseAPI.update(lazy);
     } catch (err) {
       setError("Failed to update course");
@@ -55,7 +55,7 @@ const GPATable: React.FC<GPATableProp> = ({ courses, semester }) => {
     }
   };
   if (error) return <Error error={error} />;
-  
+
   return (
     <div>
       {isLoading && <Loader statusText="Updating course..." />}
@@ -93,111 +93,115 @@ const GPATable: React.FC<GPATableProp> = ({ courses, semester }) => {
           <tbody>
             {courses.length !== 0 &&
               courses.map((c, idx) => {
-                const badgeColor = c.grade === "A" || c.grade === "B"
-                  ? "bg-badge-green text-green-600 dark:bg-green-900 dark:!text-green-200"
-                  : c.grade === "C" ? "bg-badge-yellow text-yellow-600 dark:bg-yellow-900 dark:!text-yellow-200"
-                  : c.grade === "D" || c.grade === "E" || c.grade === "F" ? "bg-badge-red text-red-600 dark:bg-red-900 dark:!text-red-200"
-                  : c.grade === "F" ? "bg-badge-red text-red-600"
-                  : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
+                const badgeColor =
+                  c.grade === "A" || c.grade === "B"
+                    ? "bg-badge-green text-green-600 dark:bg-green-700/50 dark:!text-green-200"
+                    : c.grade === "C"
+                      ? "bg-badge-yellow text-yellow-600 dark:bg-yellow-600/40 dark:!text-yellow-200"
+                      : c.grade === "D" || c.grade === "E" || c.grade === "F"
+                        ? "bg-badge-red text-red-600 dark:bg-red-900/50 dark:!text-red-200"
+                        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
                 return (
-                <tr
-                  key={idx}
-                  className={`border-b last:border-none text-gray-800 dark:text-white
-                    ${badgeColor}
+                  <tr
+                    key={idx}
+                    className={`border-b last:border-none text-gray-800 dark:text-white backdrop-blur ${badgeColor}
                     `}
-                >
-                  <td className="p-3">{c.code}</td>
-                  <td className="p-3 text-center">{c.units}</td>
-                  <td className="p-3 text-center">{c.grade ?? "-"}</td>
-                  <td>
-                    <AppDialog
-                      triggerClassName="!bg-gradient-to-r from-transparent to-transparent !p-0"
-                      triggerLabel={
-                        <div onClick={() => setUpdatedCourse(c)}>
-                          <Edit2
-                            size={16}
-                            className="text-black dark:text-white"
-                          />
-                        </div>
-                      }
-                      title="Edit course"
-                      description="Edit the course details below."
-                    >
-                      <form
-                        className="space-y-2 text-black"
-                        onSubmit={handleUpdate}
+                  >
+                    <td className="p-3">{c.code}</td>
+                    <td className="p-3 text-center">{c.units}</td>
+                    <td className="p-3 text-center">{c.grade ?? "-"}</td>
+                    <td>
+                      <AppDialog
+                        triggerClassName="!bg-gradient-to-r from-transparent to-transparent !p-0"
+                        triggerLabel={
+                          <div onClick={() => setUpdatedCourse(c)}>
+                            <Edit2
+                              size={16}
+                              className="text-black dark:text-white"
+                            />
+                          </div>
+                        }
+                        title="Edit course"
+                        description="Edit the course details below."
                       >
-                        <input
-                          type="text"
-                          name="code"
-                          placeholder="Course Code"
-                          value={updatedCourse.code || ""}
-                          onChange={(e) =>
-                            setUpdatedCourse((prev) => ({
-                              ...prev,
-                              [e.target.name]: e.target.value.toUpperCase(),
-                            }))
-                          }
-                        />
-
-                        <input
-                          type="text"
-                          name="name"
-                          placeholder="Course Name"
-                          value={updatedCourse.name || ""}
-                          onChange={(e) =>
-                            setUpdatedCourse((prev) => ({
-                              ...prev,
-                              [e.target.name]: capitalizeWords(e.target.value),
-                            }))
-                          }
-                        />
-
-                        <Select
-                          value={updatedCourse.grade ?? ""}
-                          onValueChange={(value) =>
-                            setUpdatedCourse((prev) => ({
-                              ...prev,
-                              grade: value,
-                            }))
-                          }
+                        <form
+                          className="space-y-2 text-black"
+                          onSubmit={handleUpdate}
                         >
-                          <SelectTrigger className="w-full p-3 rounded-xl bg-white border-2 border-[#2463eb6b]">
-                            <SelectValue placeholder="Select grade" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {["A", "B", "C", "D", "E", "F"].map((grade) => (
-                              <SelectItem key={grade} value={grade}>
-                                {grade}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          <input
+                            type="text"
+                            name="code"
+                            placeholder="Course Code"
+                            value={updatedCourse.code || ""}
+                            onChange={(e) =>
+                              setUpdatedCourse((prev) => ({
+                                ...prev,
+                                [e.target.name]: e.target.value.toUpperCase(),
+                              }))
+                            }
+                          />
 
-                        <input
-                          type="number"
-                          name="units"
-                          placeholder="Units"
-                          value={updatedCourse.units || ""}
-                          onChange={(e) =>
-                            setUpdatedCourse((prev) => ({
-                              ...prev,
-                              [e.target.name]: Number(e.target.value),
-                            }))
-                          }
-                        />
+                          <input
+                            type="text"
+                            name="name"
+                            placeholder="Course Name"
+                            value={updatedCourse.name || ""}
+                            onChange={(e) =>
+                              setUpdatedCourse((prev) => ({
+                                ...prev,
+                                [e.target.name]: capitalizeWords(
+                                  e.target.value
+                                ),
+                              }))
+                            }
+                          />
 
-                        <Button
-                          type="submit"
-                          className="primary-button text-white ml-auto w-fit"
-                        >
-                          Save
-                        </Button>
-                      </form>
-                    </AppDialog>
-                  </td>
-                </tr>
-              )})}
+                          <Select
+                            value={updatedCourse.grade ?? ""}
+                            onValueChange={(value) =>
+                              setUpdatedCourse((prev) => ({
+                                ...prev,
+                                grade: value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger className="w-full p-3 rounded-xl bg-white border-2 border-[#2463eb6b]">
+                              <SelectValue placeholder="Select grade" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {["A", "B", "C", "D", "E", "F"].map((grade) => (
+                                <SelectItem key={grade} value={grade}>
+                                  {grade}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+
+                          <input
+                            type="number"
+                            name="units"
+                            placeholder="Units"
+                            value={updatedCourse.units || ""}
+                            onChange={(e) =>
+                              setUpdatedCourse((prev) => ({
+                                ...prev,
+                                [e.target.name]: Number(e.target.value),
+                              }))
+                            }
+                          />
+
+                          <Button
+                            type="submit"
+                            className="primary-button text-white ml-auto w-fit"
+                          >
+                            Save
+                          </Button>
+                        </form>
+                      </AppDialog>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
         {courses.length === 0 && (

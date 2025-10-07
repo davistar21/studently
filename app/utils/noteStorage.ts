@@ -1,4 +1,3 @@
-// utils/noteStorage.ts
 import {
   ListObjectsV2Command,
   DeleteObjectCommand,
@@ -15,13 +14,11 @@ export const fetchNotes = async (s3Client: any, userId: string) => {
 
   const response = await s3Client.send(command);
 
-  // If bucket is empty, return an empty array
   if (!response.Contents) return [];
 
-  // Map S3 objects to your Note format
   return response.Contents.map((item) => ({
     id: item.Key!,
-    title: item.Key!.split("/").pop()!, // filename only
+    title: item.Key!.split("/").pop()!,
     lastModified: item.LastModified ? item.LastModified.getTime() : undefined,
     size: item.Size,
   }));
@@ -37,13 +34,13 @@ export const uploadNote = async (
   const key = `private/${userId}/${semesterId}/${courseId}/${file.name}`;
 
   const arrayBuffer = await file.arrayBuffer();
-  const uint8Array = new Uint8Array(arrayBuffer); // <-- convert ArrayBuffer to Uint8Array
+  const uint8Array = new Uint8Array(arrayBuffer);
 
   await s3Client.send(
     new PutObjectCommand({
       Bucket: import.meta.env.VITE_S3_BUCKET_NAME,
       Key: key,
-      Body: uint8Array, // <-- this works
+      Body: uint8Array,
       ContentType: file.type,
     })
   );
@@ -60,9 +57,7 @@ export const deleteNote = async (s3Client: any, key: string) => {
   );
 };
 
-export const getNoteUrl = async (s3Client: any, key: string) => {
-  // Optional: Use getSignedUrl from @aws-sdk/s3-request-presigner if needed
-};
+export const getNoteUrl = async (s3Client: any, key: string) => {};
 
 console.log(
   /^[a-zA-Z0-9][a-zA-Z0-9-]{35}$/.test("studentlychatsession3141592653589793"),

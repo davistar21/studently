@@ -6,11 +6,12 @@ import capitalizeWords from "~/utils/capitalizeWords";
 import { type FormEvent, useState } from "react";
 import type { CourseData } from "types";
 import FileUploader from "../FileUploader";
+import Loader from "../Loader";
 
 type CourseListProp = {
   semesterId: string;
   courses: CourseData[];
-  addCourse: (course: CourseData) => void;
+  addCourse: (course: CourseData) => Promise<void>;
 };
 
 const CourseList: React.FC<CourseListProp> = ({
@@ -18,32 +19,42 @@ const CourseList: React.FC<CourseListProp> = ({
   courses,
   addCourse,
 }) => {
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget.closest("form");
-    if (!form) return;
+    try {
+      setIsLoading(true);
+      const form = e.currentTarget.closest("form");
+      if (!form) return;
 
-    const formData = new FormData(form);
-    const name = formData.get("course-name") as string;
-    const code = formData.get("course-code") as string;
-    const units = formData.get("course-units") as string;
-    if (!name || !code || !units) return;
+      const formData = new FormData(form);
+      const name = formData.get("course-name") as string;
+      const code = formData.get("course-code") as string;
+      const units = formData.get("course-units") as string;
+      if (!name || !code || !units) return;
 
-    const newCourse = {
-      id: crypto.randomUUID().split("-")[0],
-      name: capitalizeWords(name),
-      code: code.toUpperCase(),
-      units: Number(units),
-      topics: [],
-      semesterId,
-    };
+      const newCourse = {
+        id: crypto.randomUUID().split("-")[0],
+        name: capitalizeWords(name),
+        code: code.toUpperCase(),
+        units: Number(units),
+        topics: [],
+        semesterId,
+      };
 
-    addCourse(newCourse);
-    form.reset();
+      await addCourse(newCourse);
+      form.reset();
+    } catch (err) {
+      setError("Failed to add course");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <div>
+      {isLoading && <Loader statusText="Adding course..." />}
       <div className="flex mb-4 justify-between items-center">
         <h2 className="text-xl font-semibold text-gray-800">Courses</h2>
         <div className="flex gap-2">

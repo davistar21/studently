@@ -8,6 +8,17 @@ import GPATable from "~/components/semesters/GpaTable";
 import Error from "~/components/Error";
 import Loader from "~/components/Loader";
 import DeleteSemester from "~/components/semesters/DeleteSemester";
+import type { Route } from "../+types/root";
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Semester Details" },
+    {
+      name: "description",
+      content:
+        "View and edit the details about this semester - its courses, topics, and results",
+    },
+  ];
+}
 
 const SemesterPage = () => {
   const { semesterId } = useParams();
@@ -36,7 +47,7 @@ const SemesterPage = () => {
       <CourseList
         semesterId={semesterId!}
         courses={semester.courses ?? []}
-        addCourse={(course) => addCourseToSemester(semesterId!, course)}
+        addCourse={async (course) => addCourseToSemester(semesterId!, course)}
       />
       <GPATable courses={semester.courses ?? []} semester={semester} />
       <DeleteSemester semester={semester} />

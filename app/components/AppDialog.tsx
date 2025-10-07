@@ -32,7 +32,7 @@ const AppDialog: React.FC<IAppDialog> = ({
           animate={{ opacity: 1, x: 0 }}
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
-          className={`bg-green-700 primary-gradient text-white font-semibold rounded-md p-3 border-1 border-transparent w-fit ${triggerClassName}`}
+          className={`bg-green-700 primary-gradient text-white p-2  md:px-4 md:py-3  font-semibold rounded-md border-1 border-transparent w-fit ${triggerClassName}`}
         >
           {triggerLabel}
         </motion.button>

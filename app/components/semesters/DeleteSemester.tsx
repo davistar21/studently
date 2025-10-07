@@ -40,10 +40,9 @@ const DeleteSemester = ({ semester }: { semester: SemesterData }) => {
       <AppDialog
         triggerClassName="!bg-gradient-to-br from-red-600 to-red-700"
         triggerLabel={
-          <button className="font-semibold bg-red-700 text-white ">
+          <div className="font-semibold bg-red-700 text-white ">
             Delete Semester
-            
-          </button>
+          </div>
         }
         title={`Are you sure you want to delete ${semester.name}?`}
         description="This action cannot be undone"

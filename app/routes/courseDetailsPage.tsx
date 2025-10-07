@@ -13,6 +13,17 @@ import Notes from "~/components/courseDetails/NotesComponent";
 import Error from "~/components/Error";
 import Loader from "~/components/Loader";
 import DeleteCourse from "~/components/courseDetails/DeleteCourse";
+import type { Route } from "../+types/root";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Course Details" },
+    {
+      name: "description",
+      content: "Explore, edit and analyze details about your courses",
+    },
+  ];
+}
 
 const CourseDetailsPage = () => {
   const { semesterId, courseId } = useParams();
@@ -68,7 +79,7 @@ const CourseDetailsPage = () => {
       <Notes />
       {/* <ExtraInfoCards /> */}
       {/* <CourseActions onSubmit={handleSubmit} /> */}
-      <DeleteCourse course={course}/>
+      <DeleteCourse course={course} />
     </div>
   );
 };

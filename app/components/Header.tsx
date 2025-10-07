@@ -40,7 +40,7 @@ const Header = () => {
           <ThemeToggle />
         </div>
       </div>
-      <Breadcrumbs />
+      {isSidebarVisible && <Breadcrumbs />}
     </header>
   );
 };
