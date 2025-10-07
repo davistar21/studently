@@ -3,7 +3,7 @@
 ![React](https://img.shields.io/badge/Frontend-React-blue)
 ![AWS](https://img.shields.io/badge/Backend-AWS-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
-
+![Vite](https://img.shields.io/badge/Build-Vite-purple)
 
 ## 📚 Table of Contents
 - [Project Overview](#project-overview)
@@ -15,8 +15,9 @@
 - [Contributing](#contributing)
 - [Styling](#styling)
 - [Screenshots](#screenshots)
-
-
+- [License](#license)
+- [Live Demo](#-live-demo)
+- [Changelog](#-changelog)
 ## Project overview
 
 Studently unifies course management, assignment tracking, GPA calculation, and AI-assisted study tools (summaries and question generation). It was implemented as a React + TypeScript frontend (React Router v7) and an AWS Amplify backend relying on Lambda functions (business logic) and API Gateway for endpoint exposure. Amazon Bedrock is used for AI summarization and Q&A, S3 is used for storing course resources, DynamoDB for storing metadata, and CloudWatch for monitoring logs.
@@ -116,9 +117,27 @@ Make sure to deploy the output of `npm run build`
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
 
+
+## Screenshots
+
+### Landing Page
+![Landing](./public/studently-landing-top.png)
+
+### Dashboard
+![Dashboard](./public/studently-dashboard.jpeg)
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## 🚀 Live Demo
+
+[Visit the Live App](https://studently-main.vercel.app)
+
+## 📦 Changelog
+
+- v1.0.0 – Initial hackathon release
 
 
 ---
