@@ -1,19 +1,18 @@
-# Welcome to React Router!
+## Project overview
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Studently unifies course management, assignment tracking, GPA calculation, and AI-assisted study tools (summaries and question generation). It was implemented as a React + TypeScript frontend (React Router v7) and an AWS Amplify backend relying on Lambda functions (business logic) and API Gateway for endpoint exposure. Amazon Bedrock is used for AI summarization and Q&A, S3 is used for storing course resources, DynamoDB for storing metadata, and CloudWatch for monitoring logs.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Key Features
 
-## Features
+- User authentication (Amazon Cognito via Amplify)
+- Semester / Course management and GPA tracking
+- Assignments CRUD and course progress tracking
+- Document / notes upload to Amazon S3 (signed uploads handled by backend)
+- AI Summarization (calls to Amazon Bedrock from Lambda)
+- AI Q&A / Chatbot (Lambda integration) — implemented and tested as a Lambda chatbot function
+- Backend logic implemented as AWS Lambda functions invoked through API Gateway (fronted by Amplify configuration)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
+Note about Amazon Q: The project was directed to include Amazon Q as part of the hackathon brief, but Amazon Q access (QBusiness) requires organizational access.
 ## Getting Started
 
 ### Installation

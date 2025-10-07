@@ -25,7 +25,7 @@ const TopSection = () => {
         </button>
         <Link
           to="/auth"
-          className="transition-all cta-button primary-gradient text-white group"
+          className="transition duration-500 cta-button primary-gradient text-white group hover:primary-gradient-hover scale-100 hover:scale-105 flex items-center gap-2"
         >
           Get Started
           <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" />

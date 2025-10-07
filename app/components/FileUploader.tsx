@@ -3,20 +3,24 @@ import { useDropzone } from "react-dropzone";
 import formatSize from "~/utils/formatSize";
 
 interface FileUploaderProps {
-  onFileSelect?: (fil: File | null) => void;
+  onFileSelect?: (file: File | null) => void;
 }
 const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0] || null;
     onFileSelect?.(file);
   }, []);
-  const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
-    useDropzone({
-      onDrop,
-      multiple: false,
-      accept: { "/application/pdf": [".pdf"] },
-      maxSize: 20 * 1024 * 1024,
-    });
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    acceptedFiles,
+  } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: { "/application/pdf": [".pdf"] },
+    maxSize: 5 * 1024 * 1024,
+  });
 
   const file = acceptedFiles[0] || null;
   return (
@@ -34,7 +38,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
             <img src="/images/pdf.png" alt="pdf" className="size-10" />
             <div className="flex items-center space-x-3 ">
               <div>
-                <p className="truncate text-gray-700 font-medium max-w-xs text-sm">
+                <p className="truncate text-gray-700 font-medium max-w-[90%] text-sm">
                   {file.name}
                 </p>
                 <p className="text-sm text-gray-500">{formatSize(file.size)}</p>
@@ -58,7 +62,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
               <span className="font-semibold">Click to upload</span> or drag and
               drop
             </p>
-            <p className="text-lg text-gray-500 text-center">PDF (max 20mb)</p>
+            <p className="text-lg text-gray-500 text-center">PDF (max 5mb)</p>
           </div>
         )}
       </div>

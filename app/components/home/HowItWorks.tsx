@@ -7,6 +7,7 @@ import {
   Bell,
   Layers,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const features = [
   {
@@ -58,7 +59,14 @@ export default function HowItWorks() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {features.map((feature, index) => (
-            <div key={index} className="relative group min-h-[250px]">
+            <motion.div
+              key={index}
+              className="relative group min-h-[250px]"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ delay: index * 0.2, duration: 0.4 }}
+            >
               {/* Glow effect */}
               <div
                 className="absolute inset-0 rounded-xl opacity-20 blur-[6px] z-0 transition-all duration-500 group-hover:opacity-50 group-hover:blur-sm"
@@ -68,7 +76,7 @@ export default function HowItWorks() {
               ></div>
 
               {/* Actual Card */}
-              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 hover:shadow-none">
+              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500">
                 <div
                   className="w-14 h-14 flex items-center justify-center rounded-xl mb-4 dark:text-black"
                   style={{
@@ -82,7 +90,7 @@ export default function HowItWorks() {
                   {feature.title} made simple with AI-powered efficiency.
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

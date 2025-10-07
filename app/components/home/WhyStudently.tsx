@@ -1,6 +1,6 @@
 import { Layers, Brain, Focus, BarChart3, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
-
+import { motion } from "framer-motion";
 const features = [
   {
     title: "All-in-One Platform",
@@ -51,8 +51,14 @@ export default function WhyStudently() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
           {features.map((feature, index) => (
-            <div key={index} className="relative group min-h-[250px]">
-              {/* Glow effect */}
+            <motion.div
+              key={index}
+              className="relative group min-h-[250px]"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ delay: index * 0.2, duration: 0.4 }}
+            >
               <div
                 className="absolute inset-0 rounded-2xl opacity-40 blur-[6px] z-0 transition-all duration-500 group-hover:opacity-70 group-hover:blur-sm"
                 style={{
@@ -60,8 +66,7 @@ export default function WhyStudently() {
                 }}
               ></div>
 
-              {/* Actual Card */}
-              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-[8px_8px_16px_#d1d5db,-8px_-8px_16px_#ffffff] dark:shadow-none bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 hover:shadow-md ">
+              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-[8px_8px_16px_#d1d5db,-8px_-8px_16px_#ffffff] dark:shadow-none bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 ">
                 <div
                   className="w-14 h-14 flex items-center justify-center rounded-xl mb-4 dark:text-black"
                   style={{
@@ -75,7 +80,7 @@ export default function WhyStudently() {
                   {feature.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
         <Link

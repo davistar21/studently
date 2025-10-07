@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router";
 import ThemeToggle from "./ThemeToggle";
 import { SidebarTrigger } from "./ui/sidebar";
 import Logo from "./logo";
+import Breadcrumbs from "./Breadcrumbs";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,23 +21,26 @@ const Header = () => {
 
   return (
     <header
-      className={`flex items-center px-6 py-4 md:py-6 sticky top-0 z-50 transition-colors duration-300 justify-center ${
+      className={`flex flex-col gap-2 px-6 py-4 md:py-6 sticky top-0 z-9 transition-colors duration-300 justify-center ${
         isScrolled
           ? "bg-glass shadow-md backdrop-blur-xl"
           : "bg-white dark:bg-gray-900"
       }`}
     >
-      {isSidebarVisible && (
-        <SidebarTrigger className="text-black dark:text-white" />
-      )}
+      <div className="w-full flex items-center">
+        {isSidebarVisible && (
+          <SidebarTrigger className="text-black dark:text-white" />
+        )}
 
-      <Link to="/dashboard">
-        <Logo className="ml-2 text-4xl" />
-      </Link>
+        <Link to="/dashboard">
+          <Logo className="ml-2 md:text-4xl text-3xl" />
+        </Link>
 
-      <div className="ml-auto">
-        <ThemeToggle />
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </div>
+      {isSidebarVisible && <Breadcrumbs />}
     </header>
   );
 };

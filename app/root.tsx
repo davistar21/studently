@@ -17,10 +17,15 @@ import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/AppSidebar";
 import ThemeToggle from "./components/ThemeToggle";
 import { Amplify } from "aws-amplify";
-// import outputs from "../amplify_outputs.json";
+import outputs from "../amplify_outputs.json";
 import Header from "./components/Header";
-import { amplifyConfig } from "./lib/amplify-config";
-Amplify.configure(amplifyConfig);
+import amplifyConfig from "./lib/amplify-config";
+import Chatbot from "./components/Chatbot";
+
+Amplify.configure(
+  // amplifyConfig
+  outputs
+);
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -56,18 +61,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const noSidebarPaths = ['/','/auth'];
+  const noSidebarPaths = ["/", "/auth"];
   const location = useLocation();
   const isSidebarVisible = !noSidebarPaths.includes(location.pathname);
   return (
-    <SidebarProvider>
+    <SidebarProvider className="bg-gray-50 dark:bg-gray-900">
       {/* <div className="app-container flex lg:flex-row flex-col"> */}
       {/* <NavBar /> */}
-      {isSidebarVisible&&<AppSidebar />}
+      {isSidebarVisible && (
+        <div>
+          <AppSidebar />
+          <Chatbot />
+        </div>
+      )}
+
       <main>
-        <Header/>
+        <Header />
         <Outlet />
       </main>
+
       {/* </div> */}
     </SidebarProvider>
   );

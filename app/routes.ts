@@ -12,4 +12,7 @@ export default [
     "/semesters/:semesterId/courses/:courseId",
     "routes/courseDetailsPage.tsx"
   ),
+  route("/profile", "routes/profile.tsx"),
+  route("/settings", "routes/settings.tsx"),
+  route("*", "routes/404.tsx"),
 ] satisfies RouteConfig;
