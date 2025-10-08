@@ -19,16 +19,9 @@ import ThemeToggle from "./components/ThemeToggle";
 import { Amplify } from "aws-amplify";
 import outputs from "../amplify_outputs.json";
 import Header from "./components/Header";
-import amplifyConfig from "./lib/amplify-config";
 import Chatbot from "./components/Chatbot";
 
-console.log("amplifyConfig:", amplifyConfig);
-
-Amplify.configure(
-  // amplifyConfig
-  outputs
-);
-console.log("ghjkl:", import.meta.env.VITE_API_URL); // Should log the correct GraphQL URL
+Amplify.configure(outputs);
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

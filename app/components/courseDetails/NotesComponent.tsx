@@ -52,19 +52,18 @@ const Notes = () => {
       if (!sub || !courseId || !semesterId) return;
 
       const s3Client = await getS3Client();
-      console.log("s3client", s3Client);
+
       const existing = await fetchNotes(
         s3Client,
         `${sub}/${semesterId}/${courseId}`
       );
-      console.log("existing", existing);
+
       if (!existing) return;
       setNotes(existing);
 
       // Store the client for uploads/deletes
       setS3Client(s3Client);
     } catch (err) {
-      console.error("Error loading file", err);
       setError("Failed to load notes");
     } finally {
       setIsLoading(false);
@@ -80,10 +79,7 @@ const Notes = () => {
   const respo = {
     body: '{"id":"msg_bdrk_017fTQXoLBy98PQMLZGtKSHh","type":"message","role":"assistant","model":"claude-3-5-sonnet-20241022","content":[{"type":"text","text":"{\\n  \\"summary\\": \\"This document covers semiconductor physics concepts, focusing on intrinsic and extrinsic semiconductors, carrier concentrations, and current mechanisms. It explains how doping affects semiconductor properties by introducing donor or acceptor atoms, and discusses drift and diffusion currents. The document includes MATLAB simulations demonstrating the relationships between carrier concentration, mobility, and drift current with respect to doping levels.\\",\\n  \\"flashcards\\": [\\n    {\\n      \\"question\\": \\"What is the key difference between intrinsic and extrinsic semiconductors?\\",\\n      \\"answer\\": \\"Intrinsic semiconductors are pure with no added impurities, while extrinsic semiconductors are deliberately doped with impurities to improve electrical conductivity\\"\\n    },\\n    {\\n      \\"question\\": \\"What is the relationship between electrons and holes in intrinsic semiconductors?\\",\\n      \\"answer\\": \\"In intrinsic semiconductors, the number of electrons (n) equals the number of holes (p), expressed as n=p=ni\\"\\n    },\\n    {\\n      \\"question\\": \\"What are the two types of extrinsic semiconductors?\\",\\n      \\"answer\\": \\"n-type (doped with donor atoms like phosphorus to increase electrons) and p-type (doped with acceptor atoms like boron to increase holes)\\"\\n    },\\n    {\\n      \\"question\\": \\"What is drift current?\\",\\n      \\"answer\\": \\"Drift current is the movement of charge carriers due to an electric field, where electrons move towards the positive region and holes towards the negative region\\"\\n    },\\n    {\\n      \\"question\\": \\"What is diffusion current?\\",\\n      \\"answer\\": \\"Diffusion current is the movement of charge carriers from a region of higher concentration to a region of lower concentration, occurring without an electric field\\"\\n    },\\n    {\\n      \\"question\\": \\"What is the Hall Effect?\\",\\n      \\"answer\\": \\"The Hall Effect is the development of a transverse voltage across a conductor when a magnetic field is applied perpendicular to the current, used to determine carrier type and concentration\\"\\n    }\\n  ]\\n}"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":2045,"output_tokens":472}}',
   };
-  //   const parsedres = JSON.parse(respo.body);
-  //   const parsedcontent = JSON.parse(parsedres.content[0].text);
-  //   console.log("parsedcontent",parsedcontent);
-  // const {flashcards,summary}=parsedcontent;
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     try {
       setIsLoading(true);
@@ -101,7 +97,6 @@ const Notes = () => {
 
       setFile(null);
     } catch (err) {
-      console.error("Error uploading file", err);
       setError("Failed to upload note");
     } finally {
       setIsLoading(false);
@@ -122,7 +117,6 @@ const Notes = () => {
     try {
       setIsLoading(true);
       setStatusText("Analyzing with AI...");
-      console.log(noteId, "noteID");
       const res = await callAnalyze(noteId);
       const parsedBody = JSON.parse(res.body);
       const parsedContent = JSON.parse(parsedBody.content[0].text);

@@ -22,11 +22,11 @@ export async function sendJunieMessage(message: string): Promise<ChatResponse> {
     if (!idToken) {
       throw new Error("No ID token found — user may not be logged in.");
     }
-    console.log("thisisidtoken", idToken);
+
     const fullMessage = profileFetched
       ? `User Profile - Name: ${profileFetched.firstName} ${profileFetched.lastName}, Username: ${profileFetched.username}, Email: ${profileFetched.email}. Message: ${message}`
       : message;
-    console.log("fullMessage", fullMessage);
+
     const resp = await axios.post(
       `${API_BASE}${CHAT_PATH}`,
       { message: fullMessage },
@@ -41,9 +41,6 @@ export async function sendJunieMessage(message: string): Promise<ChatResponse> {
 
     return resp.data as ChatResponse;
   } catch (err) {
-    console.error("chatService error:", err);
-    throw new Error(
-      err?.response?.data?.error || err.message || "Chat service failed"
-    );
+    return Promise.reject(err);
   }
 }

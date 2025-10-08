@@ -26,7 +26,6 @@ export default function Semesters() {
       setStatusText("Adding semester...");
       await addSemester();
     } catch (err) {
-      console.error("Error adding semester:", err);
       setErr("Failed to add semester. Please try again.");
     } finally {
       setStatusText("Loading semesters...");
@@ -39,7 +38,6 @@ export default function Semesters() {
       try {
         loadSemesters();
       } catch (err) {
-        console.error("Error loading semesters:", err);
         setErr("Failed to load semesters. Please try again.");
       } finally {
         setStatusText("Loading semesters...");
@@ -112,24 +110,3 @@ export default function Semesters() {
     </div>
   );
 }
-// import { list, uploadData } from "aws-amplify/storage";
-// import * as Storage from "aws-amplify/storage"
-
-// async function testStorage() {
-//   try {
-//     console.log("yoooohoo");
-//     // list root folder
-//     const { items } = await list({ path: "" });
-//     console.log("Items in bucket:", items);
-//     console.log("yooooholllllo");
-
-//     // small test upload
-//     const blob = new Blob(["Hello world"], { type: "text/plain" });
-//     const result = await uploadData({ path: "test.txt", data: blob });
-//     console.log("Upload result:", result);
-//   } catch (err) {
-//     console.error("Storage error:", err);
-//   }
-// }
-
-// testStorage();

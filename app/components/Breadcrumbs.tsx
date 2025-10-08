@@ -38,7 +38,7 @@ export default function Breadcrumbs() {
           const semesterId = segments[1];
           try {
             const semester = getSemesterById(semesterId);
-            console.log("Breadcrumb semester:", semester);
+
             if (semester) {
               crumbs.push({
                 label: semester.name,
@@ -58,7 +58,7 @@ export default function Breadcrumbs() {
               crumbs.push({ label: semesterId }); // fallback label
             }
           } catch (err) {
-            console.error("Failed to load breadcrumb names", err);
+            return null;
           }
         }
       } else {

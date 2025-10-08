@@ -58,8 +58,3 @@ export const deleteNote = async (s3Client: any, key: string) => {
 };
 
 export const getNoteUrl = async (s3Client: any, key: string) => {};
-
-console.log(
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{35}$/.test("studentlychatsession3141592653589793"),
-  "studentlychatsession3141592653589793".length
-);

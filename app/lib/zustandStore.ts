@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import type { Course, Topic, SemesterData, SemesterModel, CourseData } from "types";
+import type {
+  Course,
+  Topic,
+  SemesterData,
+  SemesterModel,
+  CourseData,
+} from "types";
 
 import { SemesterAPI } from "~/utils/semesterHelpers";
 import { TopicAPI } from "~/utils/topicHelpers";
@@ -56,7 +62,6 @@ export const useAppStore = create<AppState>((set, get) => ({
 
       set({ semesters: semesterDataList });
     } catch (err) {
-      console.error("Failed to fetch semesters", err);
       set({
         error: err instanceof Error ? err.message : "Failed to fetch semesters",
       });
@@ -83,7 +88,6 @@ export const useAppStore = create<AppState>((set, get) => ({
       };
       set({ semesters: [...semesters, fullSemester] });
     } catch (err) {
-      console.error("Error creating semester:", err);
       set({
         error: err instanceof Error ? err.message : "Error creating semester",
       });
