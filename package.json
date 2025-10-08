@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.16.1",
+    "@cloudflare/vite-plugin": "^1.13.11",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@react-router/dev": "^7.7.1",

@@ -76,7 +76,7 @@ export default function HowItWorks() {
               ></div>
 
               {/* Actual Card */}
-              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500">
+              <div className="relative h-full z-2 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500">
                 <div
                   className="w-14 h-14 flex items-center justify-center rounded-xl mb-4 dark:text-black"
                   style={{

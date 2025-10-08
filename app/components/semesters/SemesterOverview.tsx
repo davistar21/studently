@@ -43,7 +43,6 @@ const SemesterOverview = ({ semester }: { semester: SemesterData }) => {
       await SemesterAPI.update({ ...semester, name: semesterName! });
     } catch (err) {
       setError("Failed to update semester");
-      console.error("Failed to update semester", err);
     } finally {
       setIsLoading(false);
     }

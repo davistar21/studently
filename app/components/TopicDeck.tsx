@@ -57,11 +57,9 @@ const TopicDeck: React.FC<TopicDeckProps> = ({ topics, params }) => {
         progress: STATUS_PROGRESS_MAP[newStatus ?? "not_started"],
       };
       if (!course) return;
-      ;
       await TopicAPI.update(updatedTopic);
       loadSemesters();
     } catch (err) {
-      console.error("Failed to update topic status:", err);
       setError("Failed to update topic status.");
     } finally {
       setIsLoading(false);

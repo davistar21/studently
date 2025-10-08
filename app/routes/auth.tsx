@@ -85,7 +85,3 @@ export default function AuthPage() {
     </div>
   );
 }
-
-// console.log("sfjvskhdjs"); session.tokens.signInDetails.loginId;session.tokens.userSub
-// console.log(fetchAuthSession);
-// fetchAuthSession().then((data) => console.log("data", data));

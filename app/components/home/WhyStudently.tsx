@@ -66,7 +66,7 @@ export default function WhyStudently() {
                 }}
               ></div>
 
-              <div className="relative h-full z-10 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-[8px_8px_16px_#d1d5db,-8px_-8px_16px_#ffffff] dark:shadow-none bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 ">
+              <div className="relative h-full z-2 flex flex-col justify-evenly items-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-[8px_8px_16px_#d1d5db,-8px_-8px_16px_#ffffff] dark:shadow-none bg-neumorphic dark:bg-neumorphic-dark-2 transition-all duration-500 ">
                 <div
                   className="w-14 h-14 flex items-center justify-center rounded-xl mb-4 dark:text-black"
                   style={{
