@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import {
   isRouteErrorResponse,
   Link,
@@ -48,6 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="bg-red-500">
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           {children}
+          <Analytics />
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />
