@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { SemesterAPI } from "~/utils/semesterHelpers";
 import Loader from "../Loader";
 import Error from "../Error";
+import { ScoreCircle } from "../ScoreCircle";
 
 const SemesterOverview = ({ semester }: { semester: SemesterData }) => {
   // const semesterProgress = useMemo(
@@ -91,6 +92,7 @@ const SemesterOverview = ({ semester }: { semester: SemesterData }) => {
           animate={{ opacity: 1, y: 0 }}
         >
           <GPAGauge gpa={gpa} />
+          {/* <ScoreCircle value={gpa} /> */}
           <p className="mt-2  dark:text-gray-300 font-semibold text-gray-600">
             GPA
           </p>

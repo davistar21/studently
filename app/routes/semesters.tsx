@@ -8,6 +8,7 @@ import { fetchAuthSession } from "aws-amplify/auth";
 import Error from "~/components/Error";
 import Loader from "~/components/Loader";
 import type { Route } from "../+types/root";
+import { ScoreCircle } from "~/components/ScoreCircle";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -17,8 +18,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Semesters() {
-  const { addSemester, semesters, isLoading, loadSemesters, error } =
-    useAppStore();
+  const {
+    addSemester,
+    semesters,
+    isLoading,
+    loadSemesters,
+    error,
+    calculateGPA,
+  } = useAppStore();
   const [statusText, setStatusText] = useState("Loading semesters...");
   const [err, setErr] = useState<string | null>(null);
   const handleAddSemester = async () => {
@@ -31,12 +38,12 @@ export default function Semesters() {
       setStatusText("Loading semesters...");
     }
   };
-  const { calculateGPA } = useAppStore();
 
   useEffect(() => {
     (async () => {
       try {
-        loadSemesters();
+        await loadSemesters();
+        useAppStore().setSemesters(semesters);
       } catch (err) {
         setErr("Failed to load semesters. Please try again.");
       } finally {
@@ -90,12 +97,16 @@ export default function Semesters() {
                     </h2>
                     <div className="ml-auto">
                       <GPAGauge gpa={gpa} />
+                      {/* <ScoreCircle value={gpa} /> */}
                     </div>
                   </div>
 
                   <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     <p>📚 Courses: {sem.courses?.length ?? 0}</p>
-                    <p>🔢 Units: {sem.units ?? 0}</p>
+                    <p>
+                      🔢 Units:{" "}
+                      {sem.courses?.reduce((sum, c) => sum + c.units, 0) ?? 0}
+                    </p>
                   </div>
 
                   <Button className="mt-4 inline-block text-center bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition">

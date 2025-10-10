@@ -4,12 +4,14 @@ import { sendJunieMessage } from "~/utils/chatService";
 import { motion, AnimatePresence } from "framer-motion";
 import Error from "./Error";
 import Loader from "./Loader";
+import { useAppStore } from "~/lib/zustandStore";
+import getImportantData from "~/utils/getImportantInfo";
 export default function Chatbot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text: "Hi there 👋! I’m Junie, Studently’s AI assistant. How can I help you today?",
+      text: "Hi there 👋! I'm Junie, Studently’s AI assistant. How can I help you today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -39,9 +41,15 @@ export default function Chatbot() {
   };
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const containerElem = containerRef.current;
-    containerElem && (containerElem.scrollTop = containerElem.scrollHeight);
+    const container = containerRef.current;
+    if (container) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
+
   if (error) return <Error error={error} />;
   return (
     <>
@@ -69,7 +77,6 @@ export default function Chatbot() {
 
             {/* Chat Window */}
             <motion.div
-              ref={containerRef}
               className="fixed bottom-0 left-0 right-0 md:-translate-1/2 md:top-1/2 md:left-1/2 z-50 flex flex-col w-full bg-white dark:bg-gray-900 shadow-xl max-w-[680px] min-h-[60vh] max-h-[80vh] mx-auto rounded-t-2xl md:rounded-2xl rounded-t-2xl border-gray-300 dark:border-gray-700 overflow-hidden"
               initial={{ opacity: 0, y: "100%" }}
               animate={{ opacity: 1, y: 0 }}
@@ -92,7 +99,10 @@ export default function Chatbot() {
               </div>
 
               {/* Chat Messages */}
-              <div className="flex-1 scrollbar overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-800">
+              <div
+                ref={containerRef}
+                className="flex-1 scrollbar overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-800"
+              >
                 {messages.map((msg, i) => (
                   <div
                     key={i}
@@ -106,8 +116,12 @@ export default function Chatbot() {
                   </div>
                 ))}
                 {isLoading && (
-                  <div className="animate-pulse self-start bg-gray-200 dark:bg-gray-700 p-2 w-fit rounded-lg italic text-sm font-semibold">
-                    typing...
+                  <div className="custom-loader">
+                    <div className="flex gap-[6px]">
+                      <hr />
+                      <hr />
+                      <hr />
+                    </div>
                   </div>
                 )}
               </div>

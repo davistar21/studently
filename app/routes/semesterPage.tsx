@@ -30,14 +30,14 @@ const SemesterPage = () => {
     error,
     loadSemesters,
   } = useAppStore();
-  useEffect(() => {
-    loadSemesters();
-  }, [semesters]);
+
   const semester = useMemo(() => {
     if (!semesterId) return;
     return getSemesterById(semesterId) ?? null;
   }, [semesterId, semesters]);
-
+  useEffect(() => {
+    loadSemesters();
+  }, [semesters]);
   if (!semester) return <Loader statusText="Loading semester..." />;
   if (error) return <Error error={error} />;
   return (

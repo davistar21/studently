@@ -7,7 +7,7 @@ import {
 } from "~/components/ui/select";
 
 import { Edit2 } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import type { CourseData, SemesterData } from "types";
 import AppDialog from "~/components/AppDialog";
 import FileUploader from "~/components/FileUploader";
@@ -17,6 +17,7 @@ import { CourseAPI } from "~/utils/courseHelpers";
 import { useParams } from "react-router";
 import Error from "../Error";
 import capitalizeWords from "~/utils/capitalizeWords";
+import { useAppStore } from "~/lib/zustandStore";
 type GPATableProp = {
   courses: CourseData[];
   semester: SemesterData;
@@ -26,6 +27,7 @@ const GPATable: React.FC<GPATableProp> = ({ courses, semester }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { semesterId } = useParams();
+  const { loadSemesters } = useAppStore();
 
   const [updatedCourse, setUpdatedCourse] = useState<CourseData>({
     semesterId,

@@ -20,7 +20,7 @@
 - [Changelog](#-changelog)
 ## Project overview
 
-Studently unifies course management, assignment tracking, GPA calculation, and AI-assisted study tools (summaries and question generation). It was implemented as a React + TypeScript frontend (React Router v7) and an AWS Amplify backend relying on Lambda functions (business logic) and API Gateway for endpoint exposure. Amazon Bedrock is used for AI summarization and Q&A, S3 is used for storing course resources, DynamoDB for storing metadata, and CloudWatch for monitoring logs.
+Studently unifies course management, assignment tracking, GPA calculation, and AI-assisted study tools (summaries and question generation). It was implemented as a React + TypeScript frontend (React Router v7) and an AWS Amplify backend relying on Lambda functions (business logic), AWS Textract for extracting texts, and API Gateway for endpoint exposure. Amazon Bedrock is used for AI summarization and Q&A, S3 is used for storing course resources, DynamoDB for storing metadata, and CloudWatch for monitoring logs.
 
 ![Dashboard](./public/studently-dashboard.jpeg)
 

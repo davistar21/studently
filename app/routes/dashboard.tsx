@@ -10,7 +10,7 @@ import {
   Zap,
   ChevronRight,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -47,12 +47,6 @@ const studyTime = [
   { day: "Sun", hrs: 1.0 },
 ];
 
-const quickStats = [
-  { id: "gpa", label: "Current CGPA", value: "4.12", accent: "blue" },
-  { id: "courses", label: "Active Courses", value: "5", accent: "green" },
-  { id: "units", label: "Total Units", value: "63", accent: "coral" },
-];
-
 const recommendations = [
   "Revise Thermodynamics: exam in 10 days",
   "Practice 20 flashcards: Calculus II",
@@ -67,10 +61,61 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Dashboard() {
-  const { loadSemesters, semesters } = useAppStore();
+  const { loadSemesters, calculateCGPA, calculateGPA, semesters } =
+    useAppStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [profile, setProfile] = useState<ProfileProps | null>(null);
+  const semestersUnits = useMemo(() => {
+    const semestersUnitsArray = semesters.flatMap((semester) => semester.units);
+    return semestersUnitsArray.reduce((sum, c) => sum + c, 0);
+  }, []);
+  const semestersCoursesLength = useMemo(
+    () => semesters.flatMap((semester) => semester.courses).length,
+    []
+  );
+  const semesterGpaData = semesters
+    .map((semester) => ({
+      name: semester.name,
+      gpa: calculateGPA(semester.id),
+    }))
+    .reverse();
+
+  const gradePointsMap: Record<string, number> = {
+    A: 5,
+    B: 4,
+    C: 3,
+    D: 2,
+    E: 1,
+    F: 0,
+  };
+
+  const semesterCoursesData =
+    semesters[1]?.courses?.map((course) => ({
+      course: course.code,
+      grade: gradePointsMap[course.grade?.toUpperCase() ?? "F"] ?? 0,
+    })) ?? [];
+  const quickStats = [
+    {
+      id: "gpa",
+      label: "Current CGPA",
+      value: calculateCGPA() ?? 0,
+      accent: "blue",
+    },
+    {
+      id: "courses",
+      label: "Active Courses",
+      value: semestersCoursesLength,
+      accent: "green",
+    },
+    {
+      id: "units",
+      label: "Total Units",
+      value: semestersUnits,
+      accent: "coral",
+    },
+  ];
+
   useEffect(() => {
     (async () => {
       try {
@@ -104,7 +149,6 @@ export default function Dashboard() {
   }, []);
   return (
     <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* Header / Hero */}
       {isLoading && <Loader statusText="Loading dashboard..." />}
       <div className="mb-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -141,11 +185,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Bento Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left column: big tiles */}
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* KPI Cards (top row) */}
+        <div className="lg:col-span-8 md:grid flex flex-col gap-6">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -185,7 +226,6 @@ export default function Dashboard() {
             ))}
           </motion.div>
 
-          {/* GPA Trend Card */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -204,7 +244,7 @@ export default function Dashboard() {
 
             <div className="h-36">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={gpaTrend}>
+                <LineChart data={semesterGpaData}>
                   <CartesianGrid strokeDasharray="3 3" stroke={undefined} />
                   <XAxis dataKey="name" tickLine={false} />
                   <YAxis domain={[2.5, 4]} tickLine={false} />
@@ -220,11 +260,10 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
             <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-              Projected to reach 3.85 next semester
+              Projected to reach __ next semester
             </div>
           </motion.div>
 
-          {/* Study Assistant Card */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -251,7 +290,6 @@ export default function Dashboard() {
             </div>
           </motion.div>
 
-          {/* Planner / Upcoming tasks */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -290,9 +328,7 @@ export default function Dashboard() {
           </motion.div>
         </div>
 
-        {/* Right column: stacked / tall */}
         <div className="lg:col-span-4 flex flex-col gap-6">
-          {/* Continue Studying (Hero card) */}
           <motion.div
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
@@ -307,7 +343,6 @@ export default function Dashboard() {
             </div>
 
             <div className="mt-4 space-y-3">
-              {/* single large card for resume */}
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 className="bg-gradient-to-r from-blue-600 to-emerald-400 text-white rounded-xl p-4 shadow-lg"
@@ -339,7 +374,6 @@ export default function Dashboard() {
             </div>
           </motion.div>
 
-          {/* Did you know / hourly card */}
           <motion.div
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
@@ -358,7 +392,6 @@ export default function Dashboard() {
             </p>
           </motion.div>
 
-          {/* Recommendations */}
           <motion.div
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
@@ -383,7 +416,6 @@ export default function Dashboard() {
             </ul>
           </motion.div>
 
-          {/* Study time bar chart */}
           <motion.div
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
@@ -411,7 +443,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Footer / quick links */}
       <div className="mt-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="text-sm text-gray-600 dark:text-gray-300">

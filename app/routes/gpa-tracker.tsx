@@ -12,20 +12,9 @@ import {
 } from "recharts";
 import { Download, TrendingUp, Target, BookOpen } from "lucide-react";
 import type { Route } from "../+types/root";
-
-const gpaData = [
-  { semester: "Sem 1", gpa: 3.2 },
-  { semester: "Sem 2", gpa: 3.5 },
-  { semester: "Sem 3", gpa: 3.7 },
-  { semester: "Sem 4", gpa: 3.8 },
-];
-
-const courseData = [
-  { course: "Math", grade: 85 },
-  { course: "Physics", grade: 78 },
-  { course: "CS", grade: 92 },
-  { course: "History", grade: 74 },
-];
+import { useAppStore } from "~/lib/zustandStore";
+import { useEffect, useMemo } from "react";
+import Loader from "~/components/Loader";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -38,9 +27,44 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function GpaTracker() {
+  const { calculateCGPA, semesters, calculateGPA, loadSemesters, isLoading } =
+    useAppStore();
+  useEffect(() => {
+    loadSemesters();
+  }, []);
+  const semestersUnits = useMemo(() => {
+    const semestersUnitsArray = semesters.flatMap((semester) => semester.units);
+    return semestersUnitsArray.reduce((sum, c) => sum + c, 0);
+  }, []);
+  const semestersCoursesLength = useMemo(
+    () => semesters.flatMap((semester) => semester.courses).length,
+
+    []
+  );
+  const semesterGpaData = semesters
+    .map((semester) => ({
+      semester: semester.name,
+      gpa: calculateGPA(semester.id),
+    }))
+    .reverse();
+
+  const gradePointsMap: Record<string, number> = {
+    A: 5,
+    B: 4,
+    C: 3,
+    D: 2,
+    E: 1,
+    F: 0,
+  };
+
+  const semesterCoursesData = semesters[1]?.courses?.map((course) => ({
+    course: course.code,
+    grade: gradePointsMap[course.grade?.toUpperCase() ?? "F"] ?? 0,
+  }));
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 transition-colors duration-300">
       {/* Header */}
+      {isLoading && <Loader />}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10">
         <div>
           <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">
@@ -63,7 +87,7 @@ export default function GpaTracker() {
 
       {/* Stats Section */}
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"
+        className="flex gap-4 overflow-x-auto scrollbar w-full gap-6 mb-10 snap-x snap-mandatory"
         initial="hidden"
         animate="visible"
         variants={{
@@ -83,20 +107,20 @@ export default function GpaTracker() {
         />
         <StatCard
           icon={<Target className="text-green-500" />}
-          title="Target GPA"
-          value="3.90"
+          title="CGPA"
+          value={String(calculateCGPA() ?? 0)}
           color="from-green-500 to-emerald-600"
         />
         <StatCard
           icon={<BookOpen className="text-yellow-500" />}
           title="Courses Taken"
-          value="24"
+          value={String(semestersCoursesLength ?? 0)}
           color="from-yellow-500 to-orange-600"
         />
         <StatCard
           icon={<BookOpen className="text-teal-500" />}
           title="Units Total"
-          value="57"
+          value={String(semestersUnits ?? 0)}
           color="from-teal-500 to-cyan-600"
         />
       </motion.div>
@@ -117,7 +141,7 @@ export default function GpaTracker() {
             GPA Progress Over Semesters
           </h2>
           <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={gpaData}>
+            <LineChart data={semesterGpaData}>
               <defs>
                 <linearGradient id="gpaGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
@@ -162,7 +186,7 @@ export default function GpaTracker() {
             Last Semester Course Grades
           </h2>
           <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={courseData}>
+            <BarChart data={semesterCoursesData}>
               <defs>
                 <linearGradient id="gradeGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
@@ -209,8 +233,11 @@ function StatCard({
 }) {
   return (
     <motion.div
+      initial={{ opacity: 0, x: 30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
       whileHover={{ scale: 1.03 }}
-      className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-md p-6"
+      className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-md p-6 min-w-[250px] h-[180px] snap-center flex flex-col items-center justify-center"
     >
       <div
         className={`absolute inset-0 opacity-10 bg-gradient-to-br ${color}`}
@@ -219,7 +246,7 @@ function StatCard({
         {icon}
         <h3 className="text-sm text-gray-500 dark:text-gray-400">{title}</h3>
       </div>
-      <p className="text-3xl font-bold text-gray-900 dark:text-white">
+      <p className="text-4xl font-bold text-gray-900 dark:text-white ">
         {value}
       </p>
     </motion.div>

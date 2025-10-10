@@ -39,7 +39,7 @@ export default function ProfileSection({
     <section className="w-full max-w-3xl mx-auto px-4 py-8 sm:py-12">
       {isLoading && <Loader statusText={statusText} />}
       <div className="bg-white dark:bg-gray-800 shadow-sm rounded-xl p-6 sm:p-8 transition-colors">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex md:items-center justify-between mb-6 flex-col md:flex-row gap-4 items-start ">
           <div className="flex items-center space-x-4">
             <Avatar className="w-16 h-16">
               <AvatarImage src="" alt="User avatar" />
@@ -60,7 +60,7 @@ export default function ProfileSection({
             </div>
           </div>
           <AppDialog
-            triggerClassName="!bg-gradient-to-r from-transparent to-transparent !p-0"
+            triggerClassName="!bg-gradient-to-r from-transparent to-transparent !rounded-full ml-auto text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white bg-gray-200 dark:bg-gray-700 hover:shadow-md transition"
             triggerLabel={
               <div onClick={() => setUpdatedProfile(profile!)}>
                 Edit Profile

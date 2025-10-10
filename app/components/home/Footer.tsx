@@ -70,10 +70,21 @@ export default function Footer() {
             <a href="#" className="hover:text-indigo-600 transition">
               <Instagram className="w-6 h-6" />
             </a>
-            <a href="#" className="hover:text-indigo-600 transition">
+            <a
+              href="https://linkedin.com/in/eyitayo-obembe"
+              target="_blank"
+              className="hover:text-indigo-600 transition"
+            >
               <Linkedin className="w-6 h-6" />
             </a>
-            <a href="#" className="hover:text-indigo-600 transition">
+            <a
+              href={
+                "https:/wa.me/2348085716180?text=" +
+                "Hello, I'd like to know about Studently."
+              }
+              target="_blank"
+              className="hover:text-indigo-600 transition"
+            >
               <FaWhatsapp className="w-6 h-6" />
             </a>
             <a
@@ -96,7 +107,8 @@ export default function Footer() {
         </div>
         <div className="flex items-center justify-center gap-2">
           <a
-            href="#hire"
+            href="mailto:eyitayobembe@gmail.com"
+            target="_blank"
             className="hover:text-indigo-600 transition underline"
           >
             Hire me
