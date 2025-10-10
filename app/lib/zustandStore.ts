@@ -195,7 +195,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
 
     if (totalUnits === 0) return 0;
-    return totalPoints / totalUnits;
+    return Number((totalPoints / totalUnits).toFixed(2));
   },
 
   calculateCGPA: () => {
@@ -222,6 +222,6 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
 
     if (totalUnits === 0) return 0;
-    return totalPoints / totalUnits;
+    return Number((totalPoints / totalUnits).toFixed(2));
   },
 }));
